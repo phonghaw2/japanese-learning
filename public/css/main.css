@@ -43,9 +43,7 @@
     --space-2xs: calc(0.5rem + 6 * var(--fluid-bp));
     --space-xl-3xl: calc(3rem + 120 * var(--fluid-bp));
     --space-section: calc(var(--space-xl-3xl) * 1.2);
-
     --tb-gutter-x: 1.5rem;
-
     --border-radius: var(--space-s-m);
     --logo-height: var(--space-l);
     --site-header-padding: var(--space-m);
@@ -53,17 +51,53 @@
     --logo-width: calc(var(--logo-height) * 150 / 60);
     --nav-items: 5;
     --container-padding: var(--space-s-xl);
-
     --gutter-x: var(--space-s);
     --gutter-y: var(--space-s);
-
-    --step-2: calc(1.3225rem + 23.29 * var(--fluid-bp));
     --step-8: calc(3.05875rem + 128.94 * var(--fluid-bp));
-
     --site-header-height: calc(var(--logo-height) + var(--site-header-padding) * 2);
-
     --tb-border-color: #eaeef4;
+}
 
+::selection {
+    background: #00ff59;
+    color: #000;
+}
+
+@font-face {
+    font-family: Noto Sans JP;
+    src: url(../fonts/Noto_Sans_JP/NotoSansJP-Black.ttf);
+}
+@font-face {
+    font-family: Noto Sans JP;
+    src: url(../fonts/Noto_Sans_JP/NotoSansJP-Bold.ttf);
+}
+@font-face {
+    font-family: Noto Sans JP;
+    src: url(../fonts/Noto_Sans_JP/NotoSansJP-ExtraBold.ttf);
+}
+@font-face {
+    font-family: Noto Sans JP;
+    src: url(../fonts/Noto_Sans_JP/NotoSansJP-ExtraLight.ttf);
+}
+@font-face {
+    font-family: Noto Sans JP;
+    src: url(../fonts/Noto_Sans_JP/NotoSansJP-Light.ttf);
+}
+@font-face {
+    font-family: Noto Sans JP;
+    src: url(../fonts/Noto_Sans_JP/NotoSansJP-Medium.ttf);
+}
+@font-face {
+    font-family: Noto Sans JP;
+    src: url(../fonts/Noto_Sans_JP/NotoSansJP-Regular.ttf);
+}
+@font-face {
+    font-family: Noto Sans JP;
+    src: url(../fonts/Noto_Sans_JP/NotoSansJP-SemiBold.ttf);
+}
+@font-face {
+    font-family: Noto Sans JP;
+    src: url(../fonts/Noto_Sans_JP/NotoSansJP-Thin.ttf);
 }
 
 @font-face {
@@ -79,12 +113,11 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-
 }
 
 body {
     margin: 0;
-    font-family: var(--bs-font-sans-serif);
+    font-family: var(--base-font-family);
     font-size: 1rem;
     font-weight: 400;
     line-height: 1.5;
@@ -92,6 +125,17 @@ body {
     background-color: #fff;
     -webkit-text-size-adjust: 100%;
     -webkit-tap-highlight-color: transparent;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+main {
+    flex :1 ;
+    margin: auto;
+}
+
+.jp-font {
     font-family: "Noto Sans JP", sans-serif;
 }
 
@@ -274,7 +318,7 @@ img, svg {
     display: flex;
     align-items: center;
     width: 100%;
-    padding: .2em 0;
+    padding: .4em 0;
     font-size: var(--step-8);
     text-decoration: none;
 }
@@ -365,10 +409,7 @@ a:hover .c-menu__nav-abstract{
         padding-bottom: calc(var(--site-header-height) * 1);
     }
     .c-menu__nav-link {
-        --list-height: calc(100vh - var(--site-header-height) * 2);
-        --item-height: calc(var(--list-height) / var(--nav-items));
-        --fz: calc(var(--item-height) * 0.55);
-        font-size: clamp(var(--step-2),var(--fz),var(--step-8));
+        font-size: 4em;
     }
     .c-menu__nav-item:nth-child(odd) .c-menu__nav-label {
         margin-right: auto;
@@ -560,4 +601,53 @@ a:hover .c-menu__nav-abstract{
 .stat-label {
     color: #6c757d;
     font-size: 1rem;
+}
+
+.card {
+    z-index: 1;
+    border: 1px solid #202024;
+    background-color: white;
+    width: 800px;
+    margin-top: 50px;
+    margin-bottom: 50px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 1.63rem 1.63rem 4.6rem;
+}
+
+#vocabulary-form {
+    padding: 2.13rem 3.13rem 3.13rem;
+    border: 2px solid #202024;
+    background-color: #3a6ecf;
+    color : white;
+}
+
+.card form .input{
+    border: 1px solid #202024;
+    background-color: #99bdff;
+    color: black;
+    letter-spacing: .02em;
+    border-radius: 3.5rem;
+    width: 100%;
+    height: 2.81rem;
+    margin-bottom: 0;
+    padding: 0 1rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.42857;
+    display: block;
+    vertical-align: middle;
+}
+
+
+.card form .input:hover {
+    background: white;
+}
+
+.card form .input.is-textarea {
+    resize: none;
+    border-radius: 1.5rem;
+    height: 7.88rem;
+    padding-top: .75rem;
+    padding-bottom: .75rem;
 }

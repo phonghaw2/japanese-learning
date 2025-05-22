@@ -6,11 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>NihongoMaster - @yield('title')</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/main.css') }}">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&display=swap" rel="stylesheet">
     @yield('styles')
 </head>
 <body>
@@ -68,7 +64,7 @@
                         <div>
                             <ul class="c-menu__nav">
                                 <li class="c-menu__nav-item">
-                                    <a class="c-menu__nav-link" href="http://readme.test/gms/users" data-component="theme-hover" data-theme-id="coal" data-pointer="">
+                                    <a class="c-menu__nav-link" href="{{ route('vocabularies.create') }}" data-theme-id="coal" >
                                         <span class="c-menu__nav-label" data-counter="01">New word</span>
                                         <span class="c-menu__nav-abstract">
                                             Creiamo bellezza<br>
@@ -76,8 +72,8 @@
                                         </span>
                                     </a>
                                 </li>
-                                <li class="c-menu__nav-item " data-ref="menu.item" data-stagger="" style="--index:1; --reverse-index:5;">
-                                    <a class="c-menu__nav-link" href="http://readme.test/gms/template" data-component="theme-hover" data-theme-id="brown" data-pointer="">
+                                <li class="c-menu__nav-item " data-ref="menu.item" style="--index:1; --reverse-index:5;">
+                                    <a class="c-menu__nav-link" href="/gms/template" data-theme-id="brown" >
                                         <span class="c-menu__nav-label" data-counter="02">Flashcard</span>
                                         <span class="c-menu__nav-abstract">
                                             Custome template<br>
@@ -85,8 +81,8 @@
                                         </span>
                                     </a>
                                 </li>
-                                <li class="c-menu__nav-item " data-ref="menu.item" data-stagger="" style="--index:2; --reverse-index:4;">
-                                    <a class="c-menu__nav-link" href="http://readme.test/gms/todo" data-component="theme-hover" data-theme-id="elephant" data-pointer="">
+                                <li class="c-menu__nav-item " data-ref="menu.item" style="--index:2; --reverse-index:4;">
+                                    <a class="c-menu__nav-link" href="/gms/todo" data-theme-id="elephant" >
                                         <span class="c-menu__nav-label" data-counter="03">Handwriting practice</span>
                                         <span class="c-menu__nav-abstract">
                                             Forniamo un servizio<br>
@@ -95,8 +91,8 @@
                                         </span>
                                     </a>
                                 </li>
-                                <li class="c-menu__nav-item " data-ref="menu.item" data-stagger="" style="--index:3; --reverse-index:3;">
-                                    <a class="c-menu__nav-link" href="/produzione/" data-component="theme-hover" data-theme-id="dove" data-pointer="">
+                                <li class="c-menu__nav-item " data-ref="menu.item" style="--index:3; --reverse-index:3;">
+                                    <a class="c-menu__nav-link" href="/produzione/" data-theme-id="dove" >
                                         <span class="c-menu__nav-label" data-counter="04">Search</span>
                                         <span class="c-menu__nav-abstract">
                                             Trasformiamo una visione creativa<br>
@@ -104,8 +100,8 @@
                                         </span>
                                     </a>
                                 </li>
-                                <li class="c-menu__nav-item " data-ref="menu.item" data-stagger="" style="--index:4; --reverse-index:2;">
-                                    <a class="c-menu__nav-link" href="/sostenibilita/" data-component="theme-hover" data-theme-id="green" data-pointer="">
+                                <li class="c-menu__nav-item " data-ref="menu.item" style="--index:4; --reverse-index:2;">
+                                    <a class="c-menu__nav-link" href="/sostenibilita/" data-theme-id="green">
                                         <span class="c-menu__nav-label" data-counter="05">View Statistics</span>
                                         <span class="c-menu__nav-abstract">
                                             Etica ed estetica<br>
@@ -137,7 +133,7 @@
         </div>
     </header>
 
-    <main class="container py-4">
+    <main>
         @if(session('success'))
             <div class="alert alert-success alert-dismissible fade show" role="alert">
                 {{ session('success') }}
