@@ -31,8 +31,8 @@
                 <input type="text" class="input" id="romaji" name="romaji" value="" required>
             </div>
 
-            <div class="mt-4 mb-3">
-                <h5>Example sentence</h5>
+            <div class="mt-4">
+                <h4>Example sentence</h4>
                 <div id="example-sentences-container">
                     <div class="example-sentence border rounded p-3 mb-3">
                         <div class="row mb-2">

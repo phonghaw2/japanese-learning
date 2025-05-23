@@ -134,21 +134,38 @@
     </header>
 
     <main>
-        @if(session('success'))
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                {{ session('success') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        @endif
-
-        @if(session('error'))
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                {{ session('error') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        @endif
-
         @yield('content')
+        <div class="marquee-wrap">
+            <div class="marquee">
+                <div class="marquee__track to-left">
+                    <div class="marquee__text jp-font"><span class="marquee__pink-text">学び</span>続ける者こそ、真の<span class="marquee__black-text">強さ</span>を手に入れる。</div>
+                    <div class="marquee__text jp-font"><span class="marquee__pink-text">学び</span>続ける者こそ、真の<span class="marquee__black-text">強さ</span>を手に入れる。</div>
+                    <div class="marquee__text jp-font"><span class="marquee__pink-text">学び</span>続ける者こそ、真の<span class="marquee__black-text">強さ</span>を手に入れる。</div>
+                    <div class="marquee__text jp-font"><span class="marquee__pink-text">学び</span>続ける者こそ、真の<span class="marquee__black-text">強さ</span>を手に入れる。</div>
+                    <div class="marquee__text jp-font"><span class="marquee__pink-text">学び</span>続ける者こそ、真の<span class="marquee__black-text">強さ</span>を手に入れる。</div>
+                </div>
+                 <div class="marquee__track to-right-small-1">
+                    <div class="marquee__text-small jp-font is-text-stroke">全力でやる。きっとうまくいく。</div>
+                    <div class="marquee__text-small jp-font is-text-stroke">変化を楽しみ、進化する。</div>
+                    <div class="marquee__text-small jp-font is-text-stroke">全力でやる。きっとうまくいく。</div>
+                    <div class="marquee__text-small jp-font is-text-stroke">変化を楽しみ、進化する。</div>
+                    <div class="marquee__text-small jp-font is-text-stroke">全力でやる。きっとうまくいく。</div>
+                </div>
+                <div class="marquee__track to-left">
+                    <div class="marquee__text jp-font">才能は開花させるもの。センスは磨くもの。</div>
+                    <div class="marquee__text jp-font">才能は開花させるもの。センスは磨くもの。</div>
+                    <div class="marquee__text jp-font">才能は開花させるもの。センスは磨くもの。</div>
+                    <div class="marquee__text jp-font">才能は開花させるもの。センスは磨くもの。</div>
+                    <div class="marquee__text jp-font">才能は開花させるもの。センスは磨くもの。</div>
+                </div>
+                <div class="marquee__track to-right-small-2">
+                    <div class="marquee__text-small jp-font is-text-stroke">.。.:　*ヾ(´︶`*)ﾉ♬　.。.:　*ヾ(´︶`*)ﾉ♬　.。.:　*ヾ(´︶`*)ﾉ♬　.。.:　*ヾ(´︶`*)ﾉ♬　.。.:　*ヾ(´︶`*)ﾉ♬</div>
+                </div>
+                 <div class="marquee__track to-left-small">
+                    <div class="marquee__text-small jp-font">▂▃▅▆▇██▇▆▅▃▂▂▃▅▆▇██▇▆▅▃▂▂▃▅▆▇██▇▆▅▃▂▂▃▅▆▇██▇▆▅▃▂▂▃▅▆▇██▇▆▅▃▂</div>
+                </div>
+            </div>
+        </div>
     </main>
 
     <footer class="udlite-footer">
