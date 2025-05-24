@@ -13,57 +13,52 @@
             @csrf
             <div class="mb-3">
                 <label for="word" class="form-label">Word (Hiragana/Katakana) <span class="text-danger">*</span></label>
-                <input type="text" class="input" id="word" name="word" value="" required>
+                <input type="text" class="input" id="word" name="word" value="{{ old('word') }}" required>
             </div>
 
             <div class="mb-3">
                 <label for="kanji" class="form-label">Kanji</label>
-                <input type="text" class="input" id="kanji" name="kanji" value="" >
+                <input type="text" class="input" id="kanji" name="kanji" value="{{ old('kanji') }}" >
             </div>
 
             <div class="mb-3">
                 <label for="meaning" class="form-label">Meaning <span class="text-danger">*</span></label>
-                <textarea type="text" class="input is-textarea" id="meaning" name="meaning" value="" required></textarea>
+                <textarea type="text" class="input is-textarea" id="meaning" name="meaning" value="{{ old('meaning') }}" required></textarea>
             </div>
 
             <div class="mb-3">
                 <label for="romaji" class="form-label">Romaji <span class="text-danger">*</span></label>
-                <input type="text" class="input" id="romaji" name="romaji" value="" required>
+                <input type="text" class="input" id="romaji" name="romaji" value="{{ old('meaning') }}" required>
             </div>
 
             <div class="mt-4">
                 <h4>Example sentence</h4>
                 <div id="example-sentences-container">
-                    <div class="example-sentence border rounded p-3 mb-3">
-                        <div class="row mb-2">
-                            <div class="col-md-12">
-                                <label class="form-label">Japanese sentence <span class="text-danger">*</span></label>
-                                <input type="text" class="input" name="japanese_sentence[]" required>
-                            </div>
+                    <div class="mt-3">
+                        <div class="col-md-12">
+                            <label class="form-label">Japanese sentence <span class="text-danger">*</span></label>
+                            <input type="text" class="input" name="japanese_sentence[]" required>
                         </div>
 
-                        <div class="row mb-2">
-                            <div class="col-md-12">
-                                <label class="form-label">Meaning <span class="text-danger">*</span></label>
-                                <input type="text" class="input" name="sentence_meaning[]" required>
-                            </div>
+                        <div class="col-md-12">
+                            <label class="form-label">Meaning <span class="text-danger">*</span></label>
+                            <input type="text" class="input" name="sentence_meaning[]" required>
                         </div>
 
-                        <div class="row">
-                            <div class="col-md-12">
-                                <label class="form-label">Romaji <span class="text-danger">*</span></label>
-                                <input type="text" class="input" name="sentence_romaji[]" required>
-                            </div>
+                        <div class="col-md-12">
+                            <label class="form-label">Romaji <span class="text-danger">*</span></label>
+                            <input type="text" class="input" name="sentence_romaji[]" required>
                         </div>
                     </div>
                 </div>
 
-                <button type="button" id="add-example" class="btn btn-outline-secondary">+ Thêm câu ví dụ</button>
+                <div class="flex">
+                    <button type="button" id="add-example" class="form-btn mt-4">+ Add Example Sentence</button>
+                </div>
             </div>
 
             <div class="d-flex justify-content-between mt-4">
-                <button type="reset" class="btn btn-outline-secondary">Làm lại</button>
-                <button type="submit" class="btn btn-primary">Lưu từ vựng</button>
+                <button type="submit" class="form-submit-btn">Save</button>
             </div>
         </div>
     </form>
@@ -76,30 +71,20 @@
         // Thêm câu ví dụ mới
         $('#add-example').click(function() {
             const newExample = `
-                <div class="example-sentence border rounded p-3 mb-3">
-                    <div class="row mb-2">
-                        <div class="col-md-12">
-                            <label class="form-label">Câu tiếng Nhật <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" name="japanese_sentence[]" required>
-                        </div>
+                <div class="mt-3">
+                    <div class="col-md-12">
+                        <label class="form-label">Japanese sentence <span class="text-danger">*</span></label>
+                        <input type="text" class="input" name="japanese_sentence[]" required>
                     </div>
 
-                    <div class="row mb-2">
-                        <div class="col-md-12">
-                            <label class="form-label">Nghĩa <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" name="sentence_meaning[]" required>
-                        </div>
+                    <div class="col-md-12">
+                        <label class="form-label">Meaning <span class="text-danger">*</span></label>
+                        <input type="text" class="input" name="sentence_meaning[]" required>
                     </div>
 
-                    <div class="row mb-2">
-                        <div class="col-md-12">
-                            <label class="form-label">Romaji <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" name="sentence_romaji[]" required>
-                        </div>
-                    </div>
-
-                    <div class="text-end">
-                        <button type="button" class="btn btn-sm btn-danger remove-example">Xóa</button>
+                    <div class="col-md-12">
+                        <label class="form-label">Romaji <span class="text-danger">*</span></label>
+                        <input type="text" class="input" name="sentence_romaji[]" required>
                     </div>
                 </div>
             `;

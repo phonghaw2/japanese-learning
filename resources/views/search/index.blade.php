@@ -1,114 +1,20 @@
 {{-- resources/views/search/index.blade.php --}}
 @extends('layouts.app')
-
 @section('title', 'Tìm kiếm từ vựng')
-
-@section('styles')
-<style>
-    .search-container {
-        position: relative;
-        margin-bottom: 2rem;
-    }
-
-    .search-input {
-        font-size: 1.1rem;
-        padding: 0.75rem 1rem;
-    }
-
-    .vocabulary-list {
-        margin-top: 2rem;
-    }
-
-    .vocabulary-card {
-        border-left: 5px solid #007bff;
-        transition: all 0.3s ease;
-    }
-
-    .vocabulary-card:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-    }
-
-    .vocabulary-header {
-        display: flex;
-        align-items: baseline;
-        gap: 1rem;
-    }
-
-    .vocabulary-word {
-        font-size: 1.5rem;
-        font-weight: bold;
-    }
-
-    .vocabulary-kanji {
-        font-size: 1.3rem;
-    }
-
-    .vocabulary-romaji {
-        color: #6c757d;
-    }
-
-    .part-of-speech-tag {
-        display: inline-block;
-        background-color: #6c757d;
-        color: white;
-        padding: 0.2rem 0.5rem;
-        border-radius: 0.25rem;
-        font-size: 0.8rem;
-        margin-right: 0.5rem;
-    }
-
-    .jlpt-tag {
-        display: inline-block;
-        background-color: #28a745;
-        color: white;
-        padding: 0.2rem 0.5rem;
-        border-radius: 0.25rem;
-        font-size: 0.8rem;
-    }
-
-    .example-sentence {
-        border-left: 3px solid #6c757d;
-        padding-left: 1rem;
-        margin-top: 1rem;
-        font-size: 0.95rem;
-    }
-
-    .no-results {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        padding: 3rem;
-        background-color: #f8f9fa;
-        border-radius: 0.5rem;
-    }
-
-    .search-highlight {
-        background-color: #ffff00;
-        padding: 0 2px;
-    }
-</style>
-@endsection
-
 @section('content')
-<div class="row justify-content-center">
-    <div class="col-md-10">
-        <div class="card">
-            <div class="card-header bg-primary text-white">
-                <h4 class="mb-0">Tìm kiếm từ vựng</h4>
-            </div>
-            <div class="card-body">
-                <div class="search-container">
-                    <input type="text" id="searchInput" class="form-control search-input"
-                           placeholder="Nhập từ khóa tìm kiếm (từ, kanji, ý nghĩa,...)" autofocus>
-                </div>
+<div class="card">
+    <div class="card-header bg-primary text-white">
+        <h4 class="mb-0">Search Vocabulary</h4>
+    </div>
+    <div class="card-body">
+        <div class="search-container">
+            <input type="text" id="searchInput" class="search-input"
+                    placeholder="Enter search keywords (word, kanji, meaning, etc.)" autofocus>
+        </div>
 
-                <div id="searchResults" class="vocabulary-list">
-                    <div class="text-center text-muted py-5">
-                        <p>Nhập từ khóa để tìm kiếm từ vựng</p>
-                    </div>
-                </div>
+        <div id="searchResults" class="vocabulary-list">
+            <div class="text-center text-muted">
+                <p>Type a keyword to find vocabulary</p>
             </div>
         </div>
     </div>
@@ -133,7 +39,7 @@
             if (query === '') {
                 searchResults.html(`
                     <div class="text-center text-muted py-5">
-                        <p>Nhập từ khóa để tìm kiếm từ vựng</p>
+                        <p>Enter a keyword to search vocabulary</p>
                     </div>
                 `);
                 return;
@@ -144,9 +50,9 @@
                 searchResults.html(`
                     <div class="text-center py-3">
                         <div class="spinner-border text-primary" role="status">
-                            <span class="visually-hidden">Đang tìm kiếm...</span>
+                            <span class="visually-hidden">Loading results...</span>
                         </div>
-                        <p class="mt-2">Đang tìm kiếm...</p>
+                        <p class="mt-2">Loading results...</p>
                     </div>
                 `);
 
@@ -161,7 +67,7 @@
                     error: function(xhr) {
                         searchResults.html(`
                             <div class="alert alert-danger">
-                                Đã xảy ra lỗi trong quá trình tìm kiếm. Vui lòng thử lại sau.
+                                Something went wrong while searching. Please try again later.
                             </div>
                         `);
                     }
@@ -178,8 +84,8 @@
                         <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" class="bi bi-search text-muted mb-3" viewBox="0 0 16 16">
                             <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
                         </svg>
-                        <h5>Không tìm thấy kết quả nào</h5>
-                        <p class="text-muted">Thử tìm với từ khóa khác hoặc <a href="{{ route('vocabularies.create') }}">thêm từ vựng mới</a></p>
+                        <h5>No results found.</h5>
+                        <p class="text-muted">Try a different keyword or <a href="{{ route('vocabularies.create') }}" class="link__add-word">add a new vocabulary word. </a></p>
                     </div>
                 `);
                 return;

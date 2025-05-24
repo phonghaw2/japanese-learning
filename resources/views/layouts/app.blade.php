@@ -50,8 +50,8 @@
             <div class="box-left">
                 <div class="item box-left-logo">
                     <a href="{{ route('home') }}">
-                        <img src="/images/2phong.jpg" alt="phonghaw2" width="180px">
-                        <img src="/images/nuts.png" alt="peanut" height="32px" margin-left="6px">
+                        <img src="/images/2phong.jpg" alt="phonghaw2" width="150px">
+                        <img src="/images/nuts.png" alt="peanut" height="26px" margin-left="6px">
                     </a>
                 </div>
             </div>
@@ -92,7 +92,7 @@
                                     </a>
                                 </li>
                                 <li class="c-menu__nav-item " data-ref="menu.item" style="--index:3; --reverse-index:3;">
-                                    <a class="c-menu__nav-link" href="/produzione/" data-theme-id="dove" >
+                                    <a class="c-menu__nav-link" href="{{ route('search.index') }}" data-theme-id="dove" >
                                         <span class="c-menu__nav-label" data-counter="04">Search</span>
                                         <span class="c-menu__nav-abstract">
                                             Trasformiamo una visione creativa<br>
@@ -160,13 +160,32 @@
                 </div>
                 <div class="marquee__track to-right-small-2">
                     <div class="marquee__text-small jp-font is-text-stroke">.。.:　*ヾ(´︶`*)ﾉ♬　.。.:　*ヾ(´︶`*)ﾉ♬　.。.:　*ヾ(´︶`*)ﾉ♬　.。.:　*ヾ(´︶`*)ﾉ♬　.。.:　*ヾ(´︶`*)ﾉ♬</div>
+                    <div class="marquee__text-small jp-font is-text-stroke">.。.:　*ヾ(´︶`*)ﾉ♬　.。.:　*ヾ(´︶`*)ﾉ♬　.。.:　*ヾ(´︶`*)ﾉ♬　.。.:　*ヾ(´︶`*)ﾉ♬　.。.:　*ヾ(´︶`*)ﾉ♬</div>
                 </div>
                  <div class="marquee__track to-left-small">
+                    <div class="marquee__text-small jp-font">▂▃▅▆▇██▇▆▅▃▂▂▃▅▆▇██▇▆▅▃▂▂▃▅▆▇██▇▆▅▃▂▂▃▅▆▇██▇▆▅▃▂▂▃▅▆▇██▇▆▅▃▂</div>
                     <div class="marquee__text-small jp-font">▂▃▅▆▇██▇▆▅▃▂▂▃▅▆▇██▇▆▅▃▂▂▃▅▆▇██▇▆▅▃▂▂▃▅▆▇██▇▆▅▃▂▂▃▅▆▇██▇▆▅▃▂</div>
                 </div>
             </div>
         </div>
     </main>
+
+    <div class="popup-wrap">
+        <div fs-cc="banner" class="popup">
+            <div class="text-wrap">
+                <p class="popup__title">This popup (yummy!)</p>
+                <p class="popup__text">To ensure you get the best experience on our website.</p>
+            </div>
+            <div class="popup__btn-wrap">
+                <button fs-cc="allow" class="popup__btn-primary" role="button" tabindex="0">
+                    <div>Accept cookies</div>
+                </button>
+                <a href="/cookies-policy" class="popup__btn-secondary">
+                    <div>Learn more</div>
+                </a>
+            </div>
+        </div>
+    </div>
 
     <footer class="udlite-footer">
         <div class="footer-section footer-section-main">
