@@ -170,22 +170,15 @@
         </div>
     </main>
 
-    <div class="popup-wrap">
-        <div fs-cc="banner" class="popup">
-            <div class="text-wrap">
-                <p class="popup__title">This popup (yummy!)</p>
-                <p class="popup__text">To ensure you get the best experience on our website.</p>
-            </div>
-            <div class="popup__btn-wrap">
-                <button fs-cc="allow" class="popup__btn-primary" role="button" tabindex="0">
-                    <div>Accept cookies</div>
-                </button>
-                <a href="/cookies-policy" class="popup__btn-secondary">
-                    <div>Learn more</div>
-                </a>
-            </div>
-        </div>
-    </div>
+
+    @if (session('success'))
+        <script>
+            window.addEventListener('DOMContentLoaded', () => {
+                const popup = new Popup();
+                popup.showPopup(@json(session('success')));
+            });
+        </script>
+    @endif
 
     <footer class="udlite-footer">
         <div class="footer-section footer-section-main">

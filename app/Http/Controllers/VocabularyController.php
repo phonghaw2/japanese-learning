@@ -36,8 +36,8 @@ class VocabularyController extends Controller
             'meaning' => 'required|string',
             'kanji' => 'nullable|string|max:255',
             'romaji' => 'nullable|string|max:255',
-            'part_of_speech' => 'nullable|string|max:50',
-            'jlpt_level' => 'nullable|integer|min:1|max:5',
+            // 'part_of_speech' => 'nullable|string|max:50',
+            // 'jlpt_level' => 'nullable|integer|min:1|max:5',
             'example_sentences' => 'nullable|array',
             'example_sentences.*.japanese_sentence' => 'required|string',
             'example_sentences.*.meaning' => 'required|string',
@@ -50,33 +50,26 @@ class VocabularyController extends Controller
                 ->withInput();
         }
 
+        $validated = $validator->validated();
+
         $vocabulary = Vocabulary::create([
-            'word' => $request->word,
-            'meaning' => $request->meaning,
-            'kanji' => $request->kanji,
-            'romaji' => $request->romaji,
-            'part_of_speech' => $request->part_of_speech,
-            'jlpt_level' => $request->jlpt_level,
+            'word' => $validated['word'],
+            'meaning' => $validated['meaning'],
+            'kanji' => $validated['kanji'] ?? null,
+            'romaji' => $validated['romaji'] ?? null,
             'appearance_count' => 0,
             'remembered_count' => 0,
+            // 'part_of_speech' => $validated['part_of_speech'] ?? null,
+            // 'jlpt_level' => $validated['jlpt_level'] ?? null,
         ]);
 
-        // Lưu các câu ví dụ (nếu có)
-        if ($request->has('example_sentences') && is_array($request->example_sentences)) {
-            foreach ($request->example_sentences as $sentence) {
-                if (!empty($sentence['japanese_sentence']) && !empty($sentence['meaning'])) {
-                    ExampleSentence::create([
-                        'vocabulary_id' => $vocabulary->id,
-                        'japanese_sentence' => $sentence['japanese_sentence'],
-                        'meaning' => $sentence['meaning'],
-                        'romaji' => $sentence['romaji'] ?? null,
-                    ]);
-                }
+        if (!empty($validated['example_sentences'])) {
+            foreach ($validated['example_sentences'] as $data) {
+                $vocabulary->exampleSentences()->create($data);
             }
         }
 
-        return redirect()->route('vocabularies.index')
-            ->with('success', 'Đã thêm từ vựng mới thành công!');
+        return redirect()->back()->with('success', 'Đã thêm từ mới thành công');
     }
 
     /**
@@ -107,8 +100,8 @@ class VocabularyController extends Controller
             'meaning' => 'required|string',
             'kanji' => 'nullable|string|max:255',
             'romaji' => 'nullable|string|max:255',
-            'part_of_speech' => 'nullable|string|max:50',
-            'jlpt_level' => 'nullable|integer|min:1|max:5',
+            // 'part_of_speech' => 'nullable|string|max:50',
+            // 'jlpt_level' => 'nullable|integer|min:1|max:5',
             'example_sentences' => 'nullable|array',
             'example_sentences.*.japanese_sentence' => 'required|string',
             'example_sentences.*.meaning' => 'required|string',

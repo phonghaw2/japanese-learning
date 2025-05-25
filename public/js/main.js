@@ -60,3 +60,57 @@ class MenuController {
         }
     }
 }
+
+
+
+class Popup {
+    constructor() {
+        this.popupWrap = null;
+    }
+
+    createPopup(message) {
+        const wrapper = document.createElement('div');
+        wrapper.classList.add('popup-wrap');
+
+        wrapper.innerHTML = `
+        <div class="popup">
+            <div class="text-wrap">
+                <p class="popup__title">Notification</p>
+                <p class="popup__text">${message}</p>
+            </div>
+            <div class="popup__btn-wrap">
+                <button class="popup__btn-primary" role="button" tabindex="0">OK</button>
+            </div>
+        </div>
+        `;
+
+        wrapper.querySelector('.popup__btn-primary').addEventListener('click', () => {
+            this.closePopup();
+        });
+
+        return wrapper;
+    }
+
+    showPopup(message) {
+        if (this.popupWrap) {
+            this.closePopup();
+        }
+
+        this.popupWrap = this.createPopup(message);
+
+        const main = document.querySelector('main');
+        if (main) {
+            main.insertAdjacentElement('afterend', this.popupWrap);
+        } else {
+            document.body.appendChild(this.popupWrap);
+        }
+    }
+
+    closePopup() {
+        if (this.popupWrap) {
+            this.popupWrap.remove();
+            this.popupWrap = null;
+        }
+    }
+}
+
