@@ -850,6 +850,9 @@ a:hover .c-menu__nav-abstract{
 
 
 
+.mb-3 {
+    margin-bottom:1rem!important
+}
 
 .mt-4{
     margin-top:1.5rem!important
@@ -871,6 +874,10 @@ a:hover .c-menu__nav-abstract{
 
 .text-muted{
     color:var(--color--primary-grey)!important
+}
+
+.small,small{
+    font-size:.875em
 }
 
 .jp-font {
@@ -980,4 +987,126 @@ a:hover .c-menu__nav-abstract{
 .search-highlight {
     background-color: #ffff00;
     padding: 0 2px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Flashcard */
+.flashcard {
+    perspective: 1000px;
+    height: 300px;
+    width: 100%;
+    margin: 0 auto;
+    position: relative;
+    cursor: pointer;
+}
+
+.flashcard-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+}
+
+.flashcard.flipped .flashcard-inner {
+    transform: rotateY(180deg);
+}
+
+.flashcard-front, .flashcard-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 1.5rem;
+}
+
+.flashcard-front {
+    background-color: #f8f9fa;
+    color: black;
+}
+
+.flashcard-back {
+    background-color: #343a40;
+    color: white;
+    transform: rotateY(180deg);
+}
+
+.japanese-text {
+    font-size: 3rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+}
+
+.kanji-text {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.romaji-text {
+    font-size: 1.2rem;
+    color: #6c757d;
+}
+
+.meaning-text {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.example-text {
+    font-size: 1.2rem;
+    margin-top: 1rem;
+    border-top: 1px solid #dee2e6;
+    padding-top: 1rem;
+    max-width: 100%;
+}
+
+.control-buttons {
+    margin-top: 2rem;
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.remembered-checkbox {
+    margin-top: 1.5rem;
+}
+
+.part-of-speech {
+    display: inline-block;
+    background-color: #6c757d;
+    color: white;
+    padding: 0.2rem 0.5rem;
+    border-radius: 0.25rem;
+    font-size: 0.8rem;
+    margin-bottom: 0.5rem;
+}
+
+.jlpt-level {
+    display: inline-block;
+    background-color: #28a745;
+    color: white;
+    padding: 0.2rem 0.5rem;
+    border-radius: 0.25rem;
+    font-size: 0.8rem;
+    margin-left: 0.5rem;
 }

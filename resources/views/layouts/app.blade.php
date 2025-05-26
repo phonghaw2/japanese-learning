@@ -73,7 +73,7 @@
                                     </a>
                                 </li>
                                 <li class="c-menu__nav-item " data-ref="menu.item" style="--index:1; --reverse-index:5;">
-                                    <a class="c-menu__nav-link" href="/gms/template" data-theme-id="brown" >
+                                    <a class="c-menu__nav-link" href="{{ route('flashcard.index') }}" data-theme-id="brown" >
                                         <span class="c-menu__nav-label" data-counter="02">Flashcard</span>
                                         <span class="c-menu__nav-abstract">
                                             Custome template<br>

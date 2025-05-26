@@ -14,8 +14,44 @@ class FlashCardController extends Controller
      */
     public function index()
     {
-        // $totalCards =
-        return view('flashcard.index');
+        $today = now()->toDateString();
+
+        $learnedIds = LearningSession::whereDate('created_at', $today)
+            ->pluck('vocabulary_id')
+            ->toArray();
+
+        $totalCards = Vocabulary::count();
+
+        $vocabulary = Vocabulary::with('exampleSentences')
+            ->whereNotIn('id', $learnedIds)
+            ->orderBy('appearance_count', 'asc')
+            ->inRandomOrder()
+            ->first();
+
+        if (!$vocabulary) {
+            $vocabulary = Vocabulary::with('exampleSentences')->inRandomOrder()->first();
+        }
+
+        return view('flashcard.index', compact('vocabulary', 'totalCards'));
+    }
+
+    public function recordSession(Request $request)
+    {
+        $request->validate([
+            'vocabulary_id' => 'required|exists:vocabularies,id',
+            'is_remembered' => 'nullable|boolean',
+        ]);
+
+        $vocab = Vocabulary::findOrFail($request->vocabulary_id);
+
+        LearningSession::create([
+            'vocabulary_id' => $vocab->id,
+            'is_remembered' => $request->boolean('is_remembered'),
+        ]);
+
+        $vocab->increment('appearance_count');
+
+        return redirect()->route('flashcard.index');
     }
 
     /**
@@ -23,14 +59,12 @@ class FlashCardController extends Controller
      */
     public function getRandomWord()
     {
-        // Lấy danh sách tất cả các từ vựng
         $vocabularies = Vocabulary::with('exampleSentences')->get();
 
         if ($vocabularies->isEmpty()) {
             return response()->json(['message' => 'Không có từ vựng nào trong cơ sở dữ liệu'], 404);
         }
 
-        // Tính điểm ưu tiên cho mỗi từ
         $totalVocabs = $vocabularies->count();
         $prioritySum = 0;
         $priorityScores = [];
@@ -41,7 +75,6 @@ class FlashCardController extends Controller
             $prioritySum += $priorityScore;
         }
 
-        // Chọn từ vựng dựa trên xác suất ưu tiên
         $randomValue = mt_rand(1, $prioritySum);
         $currentSum = 0;
         $selectedVocabulary = null;
@@ -54,12 +87,10 @@ class FlashCardController extends Controller
             }
         }
 
-        // Nếu không có từ nào được chọn, lấy ngẫu nhiên
         if (!$selectedVocabulary) {
             $selectedVocabulary = $vocabularies->random();
         }
 
-        // Ghi nhận phiên học mới và tăng số lần xuất hiện của từ vựng
         LearningSession::create([
             'vocabulary_id' => $selectedVocabulary->id,
             'is_remembered' => false,
@@ -81,7 +112,6 @@ class FlashCardController extends Controller
 
         $vocabulary = Vocabulary::findOrFail($request->vocabulary_id);
 
-        // Cập nhật phiên học gần nhất
         $learningSession = LearningSession::where('vocabulary_id', $vocabulary->id)
             ->latest()
             ->first();
@@ -90,7 +120,6 @@ class FlashCardController extends Controller
             $learningSession->update(['is_remembered' => true]);
         }
 
-        // Tăng số lần được đánh dấu là đã nhớ
         $vocabulary->incrementRemembered();
 
         return response()->json([

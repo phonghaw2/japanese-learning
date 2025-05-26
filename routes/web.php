@@ -22,6 +22,7 @@ Route::resource('vocabularies', VocabularyController::class);
 Route::get('/flashcard', [FlashCardController::class, 'index'])->name('flashcard.index');
 Route::get('/flashcard/random', [FlashCardController::class, 'getRandomWord'])->name('flashcard.random');
 Route::post('/flashcard/remember', [FlashCardController::class, 'markAsRemembered'])->name('flashcard.remember');
+Route::post('/flashcard/record-session', [FlashCardController::class, 'recordSession'])->name('flashcard.recordSession');
 
 // Writing practice routes
 Route::get('/writing', [WritingPracticeController::class, 'index'])->name('writing.index');
