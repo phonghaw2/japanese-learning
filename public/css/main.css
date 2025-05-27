@@ -670,6 +670,9 @@ a:hover .c-menu__nav-abstract{
 
 
 
+
+
+
 /* marquee */
 .marquee-wrap {
     z-index: 0;
@@ -909,6 +912,19 @@ a:hover .c-menu__nav-abstract{
     margin-bottom: 2rem;
 }
 
+.card-mini{
+    position:relative;
+    display:flex;
+    flex-direction:column;
+    min-width:0;
+    word-wrap:break-word;
+    background-color:#fff;
+    background-clip:border-box;
+    border:1px solid rgba(0,0,0,.125);
+    border-radius:.25rem;
+    padding: 1.63rem;
+}
+
 .search-input {
     font-size: 1.1rem;
     padding: 0.75rem 1rem;
@@ -920,7 +936,7 @@ a:hover .c-menu__nav-abstract{
 }
 
 .vocabulary-card {
-    border-left: 5px solid #007bff;
+    border-left: 5px solid var(--color--primary-blue);
     transition: all 0.3s ease;
 }
 

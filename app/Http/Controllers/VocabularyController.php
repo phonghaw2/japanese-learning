@@ -3,23 +3,27 @@
 namespace App\Http\Controllers;
 
 use App\Models\Vocabulary;
-use App\Models\ExampleSentence;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
 class VocabularyController extends Controller
 {
     /**
-     * Hiển thị trang danh sách từ vựng
+     * Display a paginated list of vocabularies
+     * @return \Illuminate\View\View
      */
     public function index()
     {
+        // Fetch vocabularies with example sentences, sorted by latest creation
         $vocabularies = Vocabulary::with('exampleSentences')->orderBy('created_at', 'desc')->paginate(15);
         return view('vocabularies.index', compact('vocabularies'));
     }
 
     /**
-     * Hiển thị form thêm từ mới
+     * Display the form to create a new vocabulary
+     * @return \Illuminate\View\View
      */
     public function create()
     {
@@ -27,10 +31,38 @@ class VocabularyController extends Controller
     }
 
     /**
-     * Lưu từ vựng mới vào database
+     * Import vocabulary from Mazii API
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function autoInsert(Request $request)
+    {
+        // Validate input word
+        $validator = Validator::make($request->all(), [
+            'word' => 'required|string|max:255',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+        // Import vocabulary from Mazii API
+        $success = $this->importFromMazii($validator->validated()['word']);
+
+        return redirect()->back()
+            ->with('success', $success ? 'Vocabulary imported successfully!' : 'Failed to import vocabulary.');
+    }
+
+    /**
+     * Store a new vocabulary in the database
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request)
     {
+        // Validate input data
         $validator = Validator::make($request->all(), [
             'word' => 'required|string|max:255',
             'meaning' => 'required|string',
@@ -52,6 +84,7 @@ class VocabularyController extends Controller
 
         $validated = $validator->validated();
 
+        // Create new vocabulary
         $vocabulary = Vocabulary::create([
             'word' => $validated['word'],
             'meaning' => $validated['meaning'],
@@ -63,38 +96,49 @@ class VocabularyController extends Controller
             // 'jlpt_level' => $validated['jlpt_level'] ?? null,
         ]);
 
+        // Add example sentences if provided
         if (!empty($validated['example_sentences'])) {
             foreach ($validated['example_sentences'] as $data) {
                 $vocabulary->exampleSentences()->create($data);
             }
         }
 
-        return redirect()->back()->with('success', 'Đã thêm từ mới thành công');
+        return redirect()->back()->with('success', 'Vocabulary added successfully!');
     }
 
     /**
-     * Hiển thị chi tiết từ vựng
+     * Display details of a specific vocabulary
+     * @param \App\Models\Vocabulary $vocabulary
+     * @return \Illuminate\View\View
      */
     public function show(Vocabulary $vocabulary)
     {
+        // Load example sentences for the vocabulary
         $vocabulary->load('exampleSentences');
         return view('vocabularies.show', compact('vocabulary'));
     }
 
     /**
-     * Hiển thị form chỉnh sửa từ vựng
+     * Display the form to edit a vocabulary
+     * @param \App\Models\Vocabulary $vocabulary
+     * @return \Illuminate\View\View
      */
     public function edit(Vocabulary $vocabulary)
     {
+        // Load example sentences for the vocabulary
         $vocabulary->load('exampleSentences');
         return view('vocabularies.edit', compact('vocabulary'));
     }
 
     /**
-     * Cập nhật từ vựng
+     * Update an existing vocabulary
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Models\Vocabulary $vocabulary
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Request $request, Vocabulary $vocabulary)
     {
+        // Validate input data
         $validator = Validator::make($request->all(), [
             'word' => 'required|string|max:255',
             'meaning' => 'required|string',
@@ -114,23 +158,24 @@ class VocabularyController extends Controller
                 ->withInput();
         }
 
+        // Update vocabulary with validated data
         $vocabulary->update([
             'word' => $request->word,
             'meaning' => $request->meaning,
-            'kanji' => $request->kanji,
-            'romaji' => $request->romaji,
+            'kanji' => $request->kanji ?? null,
+            'romaji' => $request->romaji ?? null,
             'part_of_speech' => $request->part_of_speech,
             'jlpt_level' => $request->jlpt_level,
         ]);
 
-        // Xoá các câu ví dụ cũ và thêm câu mới
+        // Delete old example sentences
         $vocabulary->exampleSentences()->delete();
 
+        // Add new example sentences if provided
         if ($request->has('example_sentences') && is_array($request->example_sentences)) {
             foreach ($request->example_sentences as $sentence) {
                 if (!empty($sentence['japanese_sentence']) && !empty($sentence['meaning'])) {
-                    ExampleSentence::create([
-                        'vocabulary_id' => $vocabulary->id,
+                    $vocabulary->exampleSentences()->create([
                         'japanese_sentence' => $sentence['japanese_sentence'],
                         'meaning' => $sentence['meaning'],
                         'romaji' => $sentence['romaji'] ?? null,
@@ -140,31 +185,38 @@ class VocabularyController extends Controller
         }
 
         return redirect()->route('vocabularies.index')
-            ->with('success', 'Đã cập nhật từ vựng thành công!');
+            ->with('success', 'Vocabulary updated successfully!');
     }
 
     /**
-     * Xoá từ vựng
+     * Delete a vocabulary
+     * @param \App\Models\Vocabulary $vocabulary
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(Vocabulary $vocabulary)
     {
+        // Delete the vocabulary and its related example sentences
         $vocabulary->delete();
 
         return redirect()->route('vocabularies.index')
-            ->with('success', 'Đã xoá từ vựng thành công!');
+            ->with('success', 'Vocabulary deleted successfully!');
     }
 
     /**
-     * API tìm kiếm từ vựng
+     * Search vocabularies via API
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\JsonResponse
      */
     public function search(Request $request)
     {
         $query = $request->get('query');
 
+        // Return empty response if query is empty
         if (empty($query)) {
             return response()->json([]);
         }
 
+        // Search vocabularies by word, kanji, meaning, or romaji
         $vocabularies = Vocabulary::where('word', 'like', "%{$query}%")
             ->orWhere('kanji', 'like', "%{$query}%")
             ->orWhere('meaning', 'like', "%{$query}%")
@@ -174,5 +226,77 @@ class VocabularyController extends Controller
             ->get();
 
         return response()->json($vocabularies);
+    }
+
+    /**
+     * Fetch vocabulary data from Mazii API
+     * @param string $query
+     * @return array|null
+     */
+    public function fetchMaziiData($query)
+    {
+        try {
+            // Prepare payload for Mazii API request
+            $payload = [
+                'dict' => 'javi',
+                'type' => 'word',
+                'query' => $query,
+                'limit' => 20,
+                'page' => 1,
+            ];
+
+            // Send POST request to Mazii API
+            $response = Http::timeout(30)->post('https://mazii.net/api/search', $payload);
+
+            if ($response->successful() && $response->json('found')) {
+                return $response->json('data');
+            }
+
+            // Log warning if API response is invalid
+            Log::warning('Mazii API returned invalid results', [
+                'query' => $query,
+                'response' => $response->body()
+            ]);
+
+            return null;
+        } catch (\Exception $e) {
+            // Log error if API call fails
+            Log::error('Error calling Mazii API: ' . $e->getMessage(), [
+                'query' => $query,
+                'exception' => $e
+            ]);
+
+            return null;
+        }
+    }
+
+    /**
+     * Import vocabulary from Mazii API and save to database
+     * @param string $word
+     * @return bool
+     */
+    public function importFromMazii($word)
+    {
+        // Fetch data from Mazii API
+        $data = $this->fetchMaziiData($word);
+
+        if (!$data || empty($data)) {
+            return false;
+        }
+
+        // Use first item from API response
+        $item = $data[0];
+
+        // Create new vocabulary record
+        Vocabulary::create([
+            'word' => $item['word'],
+            'romaji' => $item['phonetic'] ?? null,
+            'meaning' => $item['short_mean'] ?? '',
+            'kanji' => $item['word'],
+            'appearance_count' => 0,
+            'remembered_count' => 0,
+        ]);
+
+        return true;
     }
 }

@@ -124,7 +124,7 @@
                 const romaji = highlightMatch(item.romaji, query);
 
                 resultsHtml += `
-                    <div class="card vocabulary-card mb-3">
+                    <div class="card-mini vocabulary-card mb-3">
                         <div class="card-body">
                             <div class="vocabulary-header">
                                 <span class="vocabulary-word">${word}</span>
