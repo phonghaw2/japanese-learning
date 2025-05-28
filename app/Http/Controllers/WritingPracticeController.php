@@ -4,11 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\Vocabulary;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class WritingPracticeController extends Controller
 {
     /**
-     * Hiển thị trang luyện nét chữ
+     * Display the writing practice index page.
+     *
+     * @return \Illuminate\View\View
      */
     public function index()
     {
@@ -16,24 +19,34 @@ class WritingPracticeController extends Controller
     }
 
     /**
-     * Lấy từ vựng ngẫu nhiên để luyện viết
+     * Retrieve a random vocabulary word for writing practice, prioritizing those with kanji.
+     *
+     * @return \Illuminate\Http\JsonResponse
      */
     public function getRandomWord()
     {
-        // Ưu tiên từ có kanji
+        // Attempt to fetch a random vocabulary with kanji
         $vocabulary = Vocabulary::whereNotNull('kanji')
             ->inRandomOrder()
             ->first();
 
-        // Nếu không có từ nào có kanji, lấy từ bất kỳ
+        // Fallback to any random vocabulary if no kanji vocabulary is found
         if (!$vocabulary) {
             $vocabulary = Vocabulary::inRandomOrder()->first();
         }
 
+        // Handle case where no vocabulary exists
         if (!$vocabulary) {
-            return response()->json(['message' => 'Không có từ vựng nào trong cơ sở dữ liệu'], 404);
+            Log::warning('No vocabulary found in the database for writing practice.');
+            return response()->json([
+                'success' => false,
+                'message' => 'No vocabulary found in the database.'
+            ], 404);
         }
 
-        return response()->json($vocabulary);
+        return response()->json([
+            'success' => true,
+            'data' => $vocabulary
+        ]);
     }
 }

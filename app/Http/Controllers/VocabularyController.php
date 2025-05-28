@@ -244,6 +244,7 @@ class VocabularyController extends Controller
                 'limit' => 20,
                 'page' => 1,
             ];
+            // {dict: "javi", type: "kanji", query: "人", page: 1}
 
             // Send POST request to Mazii API
             $response = Http::timeout(30)->post('https://mazii.net/api/search', $payload);
