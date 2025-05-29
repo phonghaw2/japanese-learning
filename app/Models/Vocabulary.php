@@ -9,6 +9,11 @@ class Vocabulary extends Model
 {
     use HasFactory;
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
     protected $fillable = [
         'word',
         'kanji',
@@ -21,49 +26,80 @@ class Vocabulary extends Model
     ];
 
     /**
-     * Lấy các câu ví dụ liên quan đến từ vựng
+     * Get the example sentences related to this vocabulary word.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function exampleSentences()
+    public function exampleSentences(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(ExampleSentence::class);
     }
 
     /**
-     * Lấy các phiên học liên quan đến từ vựng
+     * Get the learning sessions associated with this vocabulary word.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function learningSessions()
+    public function learningSessions(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(LearningSession::class);
     }
 
     /**
-     * Tăng số lần xuất hiện của từ này
+     * Increment the appearance count of this word.
+     *
+     * @return void
      */
-    public function incrementAppearance()
+    public function incrementAppearance(): void
     {
-        $this->appearance_count += 1;
-        $this->save();
+        $this->increment('appearance_count');
     }
 
     /**
-     * Tăng số lần được đánh dấu là đã nhớ
+     * Increment the remembered count of this word.
+     *
+     * @return void
      */
-    public function incrementRemembered()
+    public function incrementRemembered(): void
     {
-        $this->remembered_count += 1;
-        $this->save();
+        $this->increment('remembered_count');
     }
 
     /**
-     * Tính tỷ lệ ưu tiên cho flashcard (ưu tiên từ ít xuất hiện hoặc ít được nhớ)
+     * Calculate the priority score for flashcard appearance.
+     * A higher score means the word is less familiar and should be shown more often.
+     *
+     * @return float
      */
-    public function getPriorityScore()
+    public function getPriorityScore(): float
     {
-        if ($this->appearance_count == 0) {
-            return 100; // Từ mới chưa xuất hiện lần nào được ưu tiên cao nhất
+        if ($this->appearance_count === 0) {
+            return 100.0; // Highest priority for new words
         }
 
-        $rememberRatio = $this->remembered_count / $this->appearance_count;
-        return 100 * (1 - $rememberRatio); // Từ càng ít được nhớ, điểm càng cao
+        $rememberRatio = $this->remembered_count / max(1, $this->appearance_count);
+        return round(100 * (1 - $rememberRatio), 2);
+    }
+
+    /**
+     * Mark this word as remembered (alias for incrementRemembered).
+     *
+     * @return void
+     */
+    public function markAsRemembered(): void
+    {
+        $this->incrementRemembered();
+    }
+
+    /**
+     * Reset appearance and remembered counters (useful for testing or re-learning).
+     *
+     * @return void
+     */
+    public function resetCounters(): void
+    {
+        $this->appearance_count = 0;
+        $this->remembered_count = 0;
+        $this->save();
     }
 }
