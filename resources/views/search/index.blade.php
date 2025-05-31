@@ -62,7 +62,7 @@
                     type: 'GET',
                     data: { query: query },
                     success: function(response) {
-                        renderSearchResults(response, query);
+                        renderSearchResults(response.data, query);
                     },
                     error: function(xhr) {
                         searchResults.html(`

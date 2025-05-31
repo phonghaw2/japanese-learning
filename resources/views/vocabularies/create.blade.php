@@ -5,9 +5,13 @@
 
 @section('content')
 <div class="card">
+    <div class="form-tab">
+        <span class="active" data-form="vocabulary-form">Old version</span>
+        <span class="" data-form="vocabulary-import">New version</span>
+    </div>
     <form action="{{ route('vocabularies.store') }}" method="POST" id="vocabulary-form">
         <div>
-            <h4 class="mb-0">Add new vocabulary</h4>
+            <h3 class="mb-3">Add new vocabulary</h3>
         </div>
         <div class="card-body">
             @csrf
@@ -50,12 +54,27 @@
                 </div>
 
                 <div class="flex">
-                    <button type="button" id="add-example" class="form-btn mt-4">+ Add Example Sentence</button>
+                    <button type="button" id="add-example" class="form-btn mt-4">+ Add</button>
                 </div>
             </div>
 
-            <div class="d-flex justify-content-between mt-4">
+            <div class="mt-4 text-center">
                 <button type="submit" class="form-submit-btn">Save</button>
+            </div>
+        </div>
+    </form>
+    <form action="{{ route('vocabularies.store.auto') }}" method="POST" id="vocabulary-import" style="display: none">
+        <div>
+            <h3 class="mb-3">Import new vocabulary</h3>
+        </div>
+        <div class="card-body">
+            @csrf
+            <div class="mb-3">
+                <label for="word" class="form-label">Word</label>
+                <input type="text" class="input" id="word" name="word" value="{{ old('word') }}" required>
+            </div>
+            <div class="mt-4 text-center">
+                <button type="submit" class="form-submit-btn">Import</button>
             </div>
         </div>
     </form>
@@ -92,6 +111,15 @@
         // Xóa câu ví dụ
         $(document).on('click', '.remove-example', function() {
             $(this).closest('.example-sentence').remove();
+        });
+
+        $('.form-tab span').click(function(){
+            var formId = $(this).data('form');
+
+            $('.form-tab span').removeClass('active');
+            $(this).addClass('active');
+            $('#vocabulary-form, #vocabulary-import').hide();
+            $('#' + formId).show();
         });
     });
 </script>

@@ -46,6 +46,16 @@ class Vocabulary extends Model
     }
 
     /**
+     * Get the synonyms associated with this vocabulary word.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function synonyms()
+    {
+        return $this->hasMany(Synonym::class);
+    }
+
+    /**
      * Increment the appearance count of this word.
      *
      * @return void

@@ -229,28 +229,26 @@ class VocabularyController extends Controller
     }
 
     /**
-     * Fetch vocabulary data from Mazii API
+     * Fetch vocabulary data from API
      * @param string $query
+     * @param string $type
      * @return array|null
      */
-    public function fetchMaziiData($query)
+    public function fetchMaziiData($query, $type)
     {
         try {
-            // Prepare payload for Mazii API request
             $payload = [
                 'dict' => 'javi',
-                'type' => 'word',
-                'query' => $query,
-                'limit' => 20,
+                'type' => $type,
                 'page' => 1,
+                'limit' => 1,
+                'query' => $query,
             ];
-            // {dict: "javi", type: "kanji", query: "人", page: 1}
-
-            // Send POST request to Mazii API
+            // Send POST request to API
             $response = Http::timeout(30)->post('https://mazii.net/api/search', $payload);
 
             if ($response->successful() && $response->json('found')) {
-                return $response->json('data');
+                return $response->json();
             }
 
             // Log warning if API response is invalid
@@ -278,18 +276,24 @@ class VocabularyController extends Controller
      */
     public function importFromMazii($word)
     {
-        // Fetch data from Mazii API
-        $data = $this->fetchMaziiData($word);
-
+        // Fetch data
+        $data = $this->fetchMaziiData($word, 'word');
         if (!$data || empty($data)) {
             return false;
         }
-
         // Use first item from API response
-        $item = $data[0];
+        $item = $data['data'][0];
+        $synonyms = collect($item['synsets'][0]['entry'])->pluck('synonym')->flatten()->unique()->values();
+
+        // Fetch kanji data
+        $data = $this->fetchMaziiData($word, 'kanji');
+        if (!$data || empty($data)) {
+            return false;
+        }
+        $kanji = $data['results'];
 
         // Create new vocabulary record
-        Vocabulary::create([
+        $vocabulary = Vocabulary::create([
             'word' => $item['word'],
             'romaji' => $item['phonetic'] ?? null,
             'meaning' => $item['short_mean'] ?? '',
@@ -297,6 +301,12 @@ class VocabularyController extends Controller
             'appearance_count' => 0,
             'remembered_count' => 0,
         ]);
+
+        foreach ($synonyms as $synonym) {
+            $vocabulary->synonyms()->create([
+                'synonym' => $synonym
+            ]);
+        }
 
         return true;
     }

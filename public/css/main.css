@@ -1,6 +1,8 @@
 
 :root {
+    --color--primary-purple: #4f52be;
     --color--primary-blue: #3a6ecf;
+    --color--secondary-blue: #b3ceff;
     --color--transparent: transparent;
     --color--primary-beige: #fff7e3;
     --color--primary-black: #202024;
@@ -572,7 +574,7 @@ a:hover .c-menu__nav-abstract{
     padding: 1.63rem 1.63rem 4.6rem;
 }
 
-#vocabulary-form {
+#vocabulary-form, #vocabulary-import {
     padding: 2.13rem 3.13rem 3.13rem;
     border: 2px solid var(--color--primary-black);
     background-color: var(--color--primary-blue);
@@ -581,7 +583,7 @@ a:hover .c-menu__nav-abstract{
 
 .card form .input{
     border: 1px solid var(--color--primary-black);
-    background-color: #99bdff;
+    background-color: var(--color--secondary-blue);
     color: black;
     letter-spacing: .02em;
     border-radius: 3.5rem;
@@ -618,7 +620,6 @@ a:hover .c-menu__nav-abstract{
     text-transform: uppercase;
     white-space: nowrap;
     border-radius: 2rem;
-    min-width: 12.5rem;
     height: 3.25rem;
     padding: .75rem 1.5rem;
     font-size: 1.06rem;
@@ -642,7 +643,6 @@ a:hover .c-menu__nav-abstract{
     text-transform: uppercase;
     white-space: nowrap;
     border-radius: 2rem;
-    min-width: 12.5rem;
     height: 3.25rem;
     padding: .75rem 1.5rem;
     font-size: 1.06rem;
@@ -656,6 +656,45 @@ a:hover .c-menu__nav-abstract{
     color: var(--color--secondary-red);
     border-color: var(--color--secondary-red)!important;
 }
+
+.form-tab {
+    display: flex;
+    gap: 1px;
+}
+
+.form-tab span {
+    padding: 5px 10px 2px 10px;
+    border-top-left-radius: 1rem;
+    border-top-right-radius: 1rem;
+    font-size: 1.25rem;
+    font-weight: bold;
+    cursor: pointer;
+    border: 1px dashed var(--color--primary-black);
+    border-bottom: none;
+    position: relative;
+}
+
+.form-tab span.active {
+    border-top: 2px solid var(--color--primary-black);
+    border-left: 2px solid var(--color--primary-black);
+    border-right: 2px solid var(--color--primary-black);
+    border-bottom: none;
+    background-image: linear-gradient(#6393ee, var(--color--primary-blue));
+}
+
+.form-tab span.active:after {
+    content: '';
+    width: 100%;
+    height: 2px;
+    background-color: var(--color--primary-blue);
+    inset: 0;
+    position: absolute;
+    top: 37px;
+}
+
+
+
+
 
 
 

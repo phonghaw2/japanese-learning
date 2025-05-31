@@ -17,6 +17,7 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 
 // Vocabulary routes
 Route::resource('vocabularies', VocabularyController::class);
+Route::post('/vocabularies/auto-insert', [VocabularyController::class, 'autoInsert'])->name('vocabularies.store.auto');
 
 // Flashcard routes
 Route::get('/flashcard', [FlashCardController::class, 'index'])->name('flashcard.index');
