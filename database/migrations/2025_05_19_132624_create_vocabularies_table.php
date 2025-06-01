@@ -18,7 +18,7 @@ return new class extends Migration
             $table->text('meaning');            // Ý nghĩa (tiếng Việt)
             $table->text('romaji')->nullable();  // Phiên âm Latin
             $table->string('part_of_speech')->nullable(); // Loại từ (danh từ, động từ, etc.)
-            $table->integer('jlpt_level')->nullable(); // Cấp độ JLPT (5-1)
+            $table->string('jlpt_level')->nullable();
             $table->integer('appearance_count')->default(0); // Số lần xuất hiện trong flashcard
             $table->integer('remembered_count')->default(0); // Số lần được đánh dấu là đã nhớ
             $table->timestamps();

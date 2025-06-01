@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\ReadingType;
 use App\Models\Vocabulary;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
@@ -290,7 +291,7 @@ class VocabularyController extends Controller
         if (!$data || empty($data)) {
             return false;
         }
-        $kanji = $data['results'];
+        $kanji = $data['results'][0];
 
         // Create new vocabulary record
         $vocabulary = Vocabulary::create([
@@ -298,6 +299,7 @@ class VocabularyController extends Controller
             'romaji' => $item['phonetic'] ?? null,
             'meaning' => $item['short_mean'] ?? '',
             'kanji' => $item['word'],
+            'jlpt_level' => $kanji['level'][0] ?? '',
             'appearance_count' => 0,
             'remembered_count' => 0,
         ]);
@@ -308,6 +310,40 @@ class VocabularyController extends Controller
             ]);
         }
 
+        if (isset($kanji['example_kun']) && is_array($kanji['example_kun'])) {
+            $this->saveReadingsWithExamples($kanji['example_kun'], $vocabulary, ReadingType::KUN); // 1 = kun
+        }
+
+        if (isset($kanji['example_on']) && is_array($kanji['example_on'])) {
+            $this->saveReadingsWithExamples($kanji['example_on'], $vocabulary, ReadingType::ON); // 0 = on
+        }
+
         return true;
+    }
+
+    /**
+     * Save readings (kun/on) and their example words to the database.
+     *
+     * @param array $examples Example data grouped by reading
+     * @param Vocabulary $vocabulary The vocabulary model to associate with
+     * @param int $type 0 = on-reading, 1 = kun-reading
+     * @return void
+     */
+    public function saveReadingsWithExamples(array $examples, Vocabulary $vocabulary, ReadingType $type): void
+    {
+        foreach ($examples as $readingText => $items) {
+            $reading = $vocabulary->readings()->create([
+                'reading' => $readingText,
+                'type' => $type,
+            ]);
+
+            foreach ($items as $item) {
+                $reading->examples()->create([
+                    'japanese_sentence' => $item['w'] ?? '',
+                    'meaning' => $item['m'] ?? '',
+                    'romaji' => $item['p'] ?? '',
+                ]);
+            }
+        }
     }
 }

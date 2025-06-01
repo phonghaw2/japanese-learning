@@ -56,6 +56,16 @@ class Vocabulary extends Model
     }
 
     /**
+     * Get the reading associated with this vocabulary word.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function readings()
+    {
+        return $this->hasMany(Reading::class);
+    }
+
+    /**
      * Increment the appearance count of this word.
      *
      * @return void
