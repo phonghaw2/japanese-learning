@@ -9,6 +9,11 @@ class Synonym extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'synonym',
+        'vocabulary_id',
+    ];
+
     /**
      * Get the vocabulary word associated with this synonym.
      *

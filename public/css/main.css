@@ -42,6 +42,13 @@
     --step-8: calc(3.05875rem + 128.94 * var(--fluid-bp));
     --site-header-height: calc(var(--logo-height) + var(--site-header-padding) * 2);
     --tb-border-color: #eaeef4;
+
+    --layer-marquee-wrap: 0;
+    --layer-content: 1;
+    --layer-mini-menu: 9;
+    --layer-header: 10;
+    --layer-popup-wrap: 11;
+    --layer-menu-overlay: 99;
 }
 
 ::selection {
@@ -167,7 +174,7 @@ img, svg {
     font-size: 13px;
     font-weight: 400;
     background-color: #ffffff;
-    z-index: 11;
+    z-index: var(--layer-header);
     transition: background .3s;
     font-family: 'Poppins', sans-serif;
 }
@@ -258,7 +265,7 @@ img, svg {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    z-index: 1;
+    z-index: var(--layer-menu-overlay);
     background-color: var(--color--primary-green);
     clip-path: polygon(0% 0%, 100% 0%, 100% 0%, 0% 0%);
 }
@@ -562,7 +569,7 @@ a:hover .c-menu__nav-abstract{
 }
 
 .card {
-    z-index: 1;
+    z-index: var(--layer-content);
     position: relative;
     border: 1px solid var(--color--primary-black);
     background-color: white;
@@ -709,12 +716,75 @@ a:hover .c-menu__nav-abstract{
 
 
 
+/* Mini Menu */
+.directional {
+    min-width: 250px;
+    position: fixed;
+    top: 25vh;
+    z-index: var(--layer-mini-menu);
+    background-color: #fff;
+}
+
+.directional__btn {
+    box-shadow: -6px 6px #000;
+    border-radius: 8px;
+    width: auto !important;
+    transition: all 0.25s ease-in-out;
+    border: 1px solid black;
+}
+
+.directional__link {
+    background-color: #FFFFFF;
+    font-size: 24px;
+    font-weight: 500;
+    line-height: 1.2em;
+    letter-spacing: 1.2px;
+    fill: #000000;
+    color: #000000;
+    border-style: solid;
+    border-width: 2px 2px 2px 2px;
+    border-color: #2A2A2A;
+    border-radius: 8px 8px 8px 8px;
+    padding: 1em 2em 1em 2em;
+    box-shadow: none;
+    text-decoration: none;
+}
+
+.directional__btn-content-wrapper {
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+    justify-content: center;
+}
+
+.directional__btn-text {
+    font-size: 1.5rem;
+}
+
+.directional__btn:hover {
+    box-shadow: -0.3em 0.2em #000;
+    transform: translate(-0.25em, 0.25em);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
 /* marquee */
 .marquee-wrap {
-    z-index: 0;
+    z-index: var(--layer-marquee-wrap);
     white-space: nowrap;
     width: 100%;
     position: absolute;
@@ -800,7 +870,7 @@ a:hover .c-menu__nav-abstract{
 
 /* Popup wrap */
 .popup-wrap {
-    z-index: 990;
+    z-index: var(--layer-popup-wrap);
     position: fixed;
     bottom: 2rem;
     right: 2rem;

@@ -77,6 +77,19 @@
         @endif
     </div>
 </div>
+
+<div class="directional">
+    <div class="directional__btn">
+        <a href="directional__link">
+            <span class="directional__btn-content-wrapper">
+                <span class="directional__btn-text">Version 2.0</span>
+                <span class="directional__btn-icon">
+                    <i aria-hidden="true" class="fas fa-long-arrow-alt-right"></i>
+                </span>
+            </span>
+        </a>
+    </div>
+</div>
 @endsection
 
 @section('scripts')

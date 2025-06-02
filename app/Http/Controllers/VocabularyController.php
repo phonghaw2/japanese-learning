@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Enums\ReadingType;
 use App\Models\Vocabulary;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
@@ -248,7 +249,7 @@ class VocabularyController extends Controller
             // Send POST request to API
             $response = Http::timeout(30)->post('https://mazii.net/api/search', $payload);
 
-            if ($response->successful() && $response->json('found')) {
+            if ($response->successful()) {
                 return $response->json();
             }
 
@@ -293,32 +294,41 @@ class VocabularyController extends Controller
         }
         $kanji = $data['results'][0];
 
-        // Create new vocabulary record
-        $vocabulary = Vocabulary::create([
-            'word' => $item['word'],
-            'romaji' => $item['phonetic'] ?? null,
-            'meaning' => $item['short_mean'] ?? '',
-            'kanji' => $item['word'],
-            'jlpt_level' => $kanji['level'][0] ?? '',
-            'appearance_count' => 0,
-            'remembered_count' => 0,
-        ]);
+        DB::beginTransaction();
 
-        foreach ($synonyms as $synonym) {
-            $vocabulary->synonyms()->create([
-                'synonym' => $synonym
+        try {
+            // Create new vocabulary record
+            $vocabulary = Vocabulary::create([
+                'word' => $item['word'],
+                'romaji' => $item['phonetic'] ?? null,
+                'meaning' => $item['short_mean'] ?? '',
+                'kanji' => $item['word'],
+                'jlpt_level' => $kanji['level'][0] ?? '',
+                'appearance_count' => 0,
+                'remembered_count' => 0,
             ]);
-        }
 
-        if (isset($kanji['example_kun']) && is_array($kanji['example_kun'])) {
-            $this->saveReadingsWithExamples($kanji['example_kun'], $vocabulary, ReadingType::KUN); // 1 = kun
-        }
+            foreach ($synonyms as $synonym) {
+                $vocabulary->synonyms()->create([
+                    'synonym' => $synonym
+                ]);
+            }
 
-        if (isset($kanji['example_on']) && is_array($kanji['example_on'])) {
-            $this->saveReadingsWithExamples($kanji['example_on'], $vocabulary, ReadingType::ON); // 0 = on
-        }
+            if (isset($kanji['example_kun']) && is_array($kanji['example_kun'])) {
+                $this->saveReadingsWithExamples($kanji['example_kun'], $vocabulary, ReadingType::KUN); // 1 = kun
+            }
 
-        return true;
+            if (isset($kanji['example_on']) && is_array($kanji['example_on'])) {
+                $this->saveReadingsWithExamples($kanji['example_on'], $vocabulary, ReadingType::ON); // 0 = on
+            }
+
+            DB::commit();
+            return true;
+        } catch (\Throwable $e) {
+            DB::rollBack();
+            Log::error('Import error: ' . $e->getMessage());
+            return false;
+        }
     }
 
     /**
@@ -339,9 +349,9 @@ class VocabularyController extends Controller
 
             foreach ($items as $item) {
                 $reading->examples()->create([
-                    'japanese_sentence' => $item['w'] ?? '',
+                    'word' => $item['w'] ?? '',
                     'meaning' => $item['m'] ?? '',
-                    'romaji' => $item['p'] ?? '',
+                    'pronunciation' => $item['p'] ?? '',
                 ]);
             }
         }
