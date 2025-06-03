@@ -20,7 +20,8 @@ Route::resource('vocabularies', VocabularyController::class);
 Route::post('/vocabularies/auto-insert', [VocabularyController::class, 'autoInsert'])->name('vocabularies.store.auto');
 
 // Flashcard routes
-Route::get('/flashcard', [FlashCardController::class, 'index'])->name('flashcard.index');
+Route::get('/flashcard/v1', [FlashCardController::class, 'index'])->name('flashcard.version1');
+Route::get('/flashcard/v2', [FlashCardController::class, 'version2'])->name('flashcard.version2');
 Route::get('/flashcard/random', [FlashCardController::class, 'getRandomWord'])->name('flashcard.random');
 Route::post('/flashcard/remember', [FlashCardController::class, 'markAsRemembered'])->name('flashcard.remember');
 Route::post('/flashcard/record-session', [FlashCardController::class, 'recordSession'])->name('flashcard.recordSession');

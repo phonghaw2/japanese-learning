@@ -24,7 +24,7 @@
                 </div>
                 <h5 class="card-title">Flashcard</h5>
                 <p class="card-text">Học và ghi nhớ từ vựng với hệ thống flashcard thông minh</p>
-                <a href="{{ route('flashcard.index') }}" class="btn btn-primary mt-3">Bắt đầu học</a>
+                <a href="{{ route('flashcard.version1') }}" class="btn btn-primary mt-3">Bắt đầu học</a>
             </div>
         </div>
     </div>

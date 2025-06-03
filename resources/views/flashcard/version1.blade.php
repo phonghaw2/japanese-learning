@@ -80,7 +80,7 @@
 
 <div class="directional">
     <div class="directional__btn">
-        <a href="directional__link">
+        <a href="{{ route('flashcard.version2') }}">
             <span class="directional__btn-content-wrapper">
                 <span class="directional__btn-text">Version 2.0</span>
                 <span class="directional__btn-icon">

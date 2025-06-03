@@ -43,14 +43,51 @@ class FlashCardController extends Controller
         // Handle case where no vocabulary exists
         if (!$vocabulary) {
             // Optionally redirect or return an empty view
-            return view('flashcard.index', [
+            return view('flashcard.version1', [
                 'vocabulary' => null,
                 'totalCards' => $totalCards,
                 'error' => 'No vocabulary available.'
             ]);
         }
 
-        return view('flashcard.index', compact('vocabulary', 'totalCards'));
+        return view('flashcard.version1', compact('vocabulary', 'totalCards'));
+    }
+
+    public function version2() {
+        $vocabulary = Vocabulary::with(['synonyms', 'readings.examples'])
+        ->orderBy('appearance_count', 'asc')
+        ->inRandomOrder()
+        ->first();
+
+        if (!$vocabulary) {
+            return redirect()->back()->with('error', 'Không tìm thấy từ nào.');
+        }
+
+        $vocabulary->increment('appearance_count');
+
+        $synonyms = $vocabulary->synonyms->pluck('synonym')->toArray();
+
+        $uniqueChars = collect();
+
+        foreach ($synonyms as $synonym) {
+            $chars = mb_str_split($synonym);
+            foreach ($chars as $char) {
+                if ($char !== $vocabulary->word) {
+                    $uniqueChars->push($char);
+                }
+            }
+        }
+
+        $uniqueChars = $uniqueChars->unique()->values();
+
+        $linkedVocabularies = Vocabulary::whereIn('word', $uniqueChars)->get();
+
+        $linkedSynonymVocabularies = $linkedVocabularies->pluck('id', 'word')->toArray();
+
+        return view('flashcard.version2', [
+            'vocabulary' => $vocabulary,
+            'linkedSynonymVocabularies' => $linkedSynonymVocabularies,
+        ]);
     }
 
     /**
@@ -79,7 +116,7 @@ class FlashCardController extends Controller
         // Increment appearance count
         $vocab->increment('appearance_count');
 
-        return redirect()->route('flashcard.index')->with('success', 'Session recorded successfully.');
+        return redirect()->route('flashcard.version1')->with('success', 'Session recorded successfully.');
     }
 
     /**

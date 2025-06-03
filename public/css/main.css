@@ -733,23 +733,6 @@ a:hover .c-menu__nav-abstract{
     border: 1px solid black;
 }
 
-.directional__link {
-    background-color: #FFFFFF;
-    font-size: 24px;
-    font-weight: 500;
-    line-height: 1.2em;
-    letter-spacing: 1.2px;
-    fill: #000000;
-    color: #000000;
-    border-style: solid;
-    border-width: 2px 2px 2px 2px;
-    border-color: #2A2A2A;
-    border-radius: 8px 8px 8px 8px;
-    padding: 1em 2em 1em 2em;
-    box-shadow: none;
-    text-decoration: none;
-}
-
 .directional__btn-content-wrapper {
     display: flex;
     flex-direction: row;
