@@ -716,38 +716,6 @@ a:hover .c-menu__nav-abstract{
 
 
 
-/* Mini Menu */
-.directional {
-    min-width: 250px;
-    position: fixed;
-    top: 25vh;
-    z-index: var(--layer-mini-menu);
-    background-color: #fff;
-}
-
-.directional__btn {
-    box-shadow: -6px 6px #000;
-    border-radius: 8px;
-    width: auto !important;
-    transition: all 0.25s ease-in-out;
-    border: 1px solid black;
-}
-
-.directional__btn-content-wrapper {
-    display: flex;
-    flex-direction: row;
-    gap: 5px;
-    justify-content: center;
-}
-
-.directional__btn-text {
-    font-size: 1.5rem;
-}
-
-.directional__btn:hover {
-    box-shadow: -0.3em 0.2em #000;
-    transform: translate(-0.25em, 0.25em);
-}
 
 
 
@@ -1217,4 +1185,114 @@ a:hover .c-menu__nav-abstract{
     border-radius: 0.25rem;
     font-size: 0.8rem;
     margin-left: 0.5rem;
+}
+
+.synonym {
+    cursor: pointer;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    text-decoration-thickness: 1.5px;
+    text-decoration-color: #00ff59;
+}
+
+.dynamic-column {
+    display: grid;
+    grid-auto-flow: column;
+    grid-template-rows: repeat(5, auto);
+    gap: 10px;
+    list-style: none;
+    padding: 0;
+}
+
+.dynamic-column li {
+    font-family: "Noto Sans JP", sans-serif;
+}
+
+.pronunciation-header {
+    height: 1.5rem;
+    text-align: center;
+    background-color: var(--color-almond);
+    border-top: 1px solid;
+    border-bottom: 1px solid;
+    margin: 15px 0px 15px 0px;
+}
+
+
+
+/* Option menu */
+.option-container {
+    min-width: 250px;
+    position: fixed;
+    top: 20vh;
+    z-index: var(--layer-mini-menu);
+    background-color: #fff;
+}
+
+.toggle-switch {
+    position: relative;
+    width: 60px;
+    height: 34px;
+    display: inline-block;
+}
+
+/* Ẩn checkbox gốc */
+.toggle-switch input {
+    display: none;
+}
+
+/* Phần nền của toggle */
+.slider {
+    position: absolute;
+    cursor: pointer;
+    background-color: #ccc;
+    border-radius: 34px;
+    top: 0; left: 0; right: 0; bottom: 0;
+    transition: 0.4s;
+}
+
+/* Chấm tròn bên trong toggle */
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    border-radius: 50%;
+    transition: 0.4s;
+}
+
+/* Khi checkbox được checked */
+input:checked + .slider {
+    background-color: #4caf50;
+}
+
+/* Di chuyển chấm tròn khi checked */
+input:checked + .slider:before {
+    transform: translateX(26px);
+}
+
+.directional__btn {
+    box-shadow: -6px 6px #000;
+    border-radius: 8px;
+    width: auto !important;
+    transition: all 0.25s ease-in-out;
+    border: 1px solid black;
+}
+
+.directional__btn-content-wrapper {
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+    justify-content: center;
+}
+
+.directional__btn-text {
+    font-size: 1.5rem;
+}
+
+.directional__btn:hover {
+    box-shadow: -0.3em 0.2em #000;
+    transform: translate(-0.25em, 0.25em);
 }

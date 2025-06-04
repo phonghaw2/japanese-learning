@@ -19,8 +19,8 @@
             <p>Meaning: {{ $vocabulary->meaning }}</p>
 
             <div class="mt-4">
-                <h5>Synonyms:</h5>
-                <ul>
+                <h4>Synonyms:</h4>
+                <ul class="dynamic-column">
                     @foreach ($vocabulary->synonyms as $synonym)
                         <li>
                             @php
@@ -29,7 +29,7 @@
                                 $chars = mb_str_split($syn);
                                 foreach ($chars as $char) {
                                     if ($char !== $vocabulary->word && isset($linkedSynonymVocabularies[$char])) {
-                                        $rendered .= '<span data-id="' . $linkedSynonymVocabularies[$char] . '">' . e($char) . '</span>';
+                                        $rendered .= '<span class="synonym" data-id="' . $linkedSynonymVocabularies[$char] . '">' . e($char) . '</span>';
                                     } else {
                                         $rendered .= e($char);
                                     }
@@ -41,31 +41,44 @@
                 </ul>
             </div>
 
-            <h4>Readings & Examples:</h4>
-            @foreach($vocabulary->readings as $reading)
-                <p><strong>{{ $reading->reading }}</strong> (type: {{ $reading->type }})</p>
-                <ul>
-                    @foreach($reading->examples as $ex)
-                        <li>{{ $ex->word }} - {{ $ex->meaning }} ({{ $ex->pronunciation }})</li>
-                    @endforeach
-                </ul>
-            @endforeach
+            <div class="mt-4">
+                <h4>Readings & Examples:</h4>
+                @foreach($vocabulary->readings as $reading)
+                    <p class="pronunciation-header"><strong>{{ str_replace('-','', $reading->reading) }}</strong> (type: {{ $reading->type_label }})</p>
+                    <ul class="dynamic-column mb-3">
+                        @foreach($reading->examples as $ex)
+                            <li data-meaning="{{ $ex->meaning }}">{{ $ex->word }}（{{ $ex->pronunciation }}）</li>
+                        @endforeach
+                    </ul>
+                @endforeach
+            </div>
         @endif
     </div>
 </div>
 
-<div class="directional">
-    <div class="directional__btn">
-        <a href="{{ route('flashcard.version1') }}">
-            <span class="directional__btn-content-wrapper">
-                <span class="directional__btn-text">Version 1.0</span>
-                <span class="directional__btn-icon">
-                    <i aria-hidden="true" class="fas fa-long-arrow-alt-right"></i>
+<div class="option-container">
+    <div>
+        <span>Blur:</span>
+        <label class="toggle-switch">
+            <input type="checkbox" />
+            <span class="slider"></span>
+        </label>
+    </div>
+
+    <div>
+        <div class="directional__btn">
+            <a href="{{ route('flashcard.version1') }}">
+                <span class="directional__btn-content-wrapper">
+                    <span class="directional__btn-text">Version 1.0</span>
+                    <span class="directional__btn-icon">
+                        <i aria-hidden="true" class="fas fa-long-arrow-alt-right"></i>
+                    </span>
                 </span>
-            </span>
-        </a>
+            </a>
+        </div>
     </div>
 </div>
+
 @endsection
 
 @section('scripts')

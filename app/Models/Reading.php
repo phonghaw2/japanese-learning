@@ -16,10 +16,6 @@ class Reading extends Model
         'type',
     ];
 
-    protected $casts = [
-        'type' => ReadingType::class,
-    ];
-
     public function vocabulary()
     {
         return $this->belongsTo(Vocabulary::class);
@@ -28,6 +24,11 @@ class Reading extends Model
     public function examples()
     {
         return $this->hasMany(ReadingExample::class);
+    }
+
+    public function getTypeLabelAttribute(): string
+    {
+        return ReadingType::label($this->type);
     }
 }
 
