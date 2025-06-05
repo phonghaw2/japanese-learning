@@ -266,7 +266,7 @@ img, svg {
     justify-content: space-between;
     align-items: center;
     z-index: var(--layer-menu-overlay);
-    background-color: var(--color--primary-green);
+    background-color: var(--color--primary-blue);
     clip-path: polygon(0% 0%, 100% 0%, 100% 0%, 0% 0%);
 }
 
@@ -286,6 +286,7 @@ img, svg {
     padding: .4em 0;
     font-size: var(--step-8);
     text-decoration: none;
+    color: honeydew;
 }
 
 .c-menu__nav-label {
@@ -1216,6 +1217,40 @@ a:hover .c-menu__nav-abstract{
     border-bottom: 1px solid;
     margin: 15px 0px 15px 0px;
 }
+
+
+.reading-container {
+    position:relative;
+}
+
+#meaning-tip {
+    position: absolute;
+    display: none;
+    padding: 6px 10px;
+    background: black;
+    color: white;
+    border-radius: 4px;
+    font-size: 14px;
+    pointer-events: none;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    opacity: 0;
+    transform: translateY(0);
+}
+
+.reading-example {
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+
+
+
+
+
+
+
+
+
+
 
 
 

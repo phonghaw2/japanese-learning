@@ -41,16 +41,17 @@
                 </ul>
             </div>
 
-            <div class="mt-4">
+            <div class="mt-4 reading-container">
                 <h4>Readings & Examples:</h4>
                 @foreach($vocabulary->readings as $reading)
                     <p class="pronunciation-header"><strong>{{ str_replace('-','', $reading->reading) }}</strong> (type: {{ $reading->type_label }})</p>
                     <ul class="dynamic-column mb-3">
                         @foreach($reading->examples as $ex)
-                            <li data-meaning="{{ $ex->meaning }}">{{ $ex->word }}（{{ $ex->pronunciation }}）</li>
+                            <li><span class="reading-example" data-meaning="{{ $ex->meaning }}">{{ $ex->word }}（{{ $ex->pronunciation }}）</span></li>
                         @endforeach
                     </ul>
                 @endforeach
+                <div id="meaning-tip"></div>
             </div>
         @endif
     </div>
@@ -60,7 +61,7 @@
     <div>
         <span>Blur:</span>
         <label class="toggle-switch">
-            <input type="checkbox" />
+            <input type="checkbox" id="blur-switch"/>
             <span class="slider"></span>
         </label>
     </div>
@@ -84,9 +85,49 @@
 @section('scripts')
 <script>
     $(document).ready(function() {
-        // Lật thẻ flashcard khi nhấp vào
-        $('.flashcard').click(function() {
-            $(this).toggleClass('flipped');
+        const tooltip = $('#meaning-tip');
+        const container = $('.reading-container');
+
+        $('.reading-example').on('mousemove', function (e) {
+            var text = $(this).data('meaning');
+            if (text) {
+                tooltip.text(text).show();
+
+                var containerOffset = container.offset();
+                var x = e.pageX - containerOffset.left;
+                var y = e.pageY - containerOffset.top;
+
+                tooltip.css({
+                    left: (x + 10) + 'px',
+                    top: (y - 40) + 'px',
+                    opacity: 1,
+                    transform: 'translateY(0)'
+                });
+
+                $(this).css({
+                    background: '#00ff59',
+                    color: 'black',
+                    fontWeight: '600'
+                });
+            }
+        });
+
+        $('.reading-example').on('mouseleave', function () {
+            tooltip.hide();
+            $(this).removeAttr('style');
+        });
+
+        $('.reading-example').on('click', function () {
+            var text = $(this).text().trim();
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(text);
+            } else {
+                const tempInput = $('<textarea>');
+                $('body').append(tempInput);
+                tempInput.val(text).select();
+                document.execCommand('copy');
+                tempInput.remove();
+            }
         });
     });
 </script>

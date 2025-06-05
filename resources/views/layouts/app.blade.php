@@ -72,7 +72,7 @@
                                         </span>
                                     </a>
                                 </li>
-                                <li class="c-menu__nav-item " data-ref="menu.item" style="--index:1; --reverse-index:5;">
+                                <li class="c-menu__nav-item " data-ref="menu.item">
                                     <a class="c-menu__nav-link" href="{{ route('flashcard.version1') }}" data-theme-id="brown" >
                                         <span class="c-menu__nav-label" data-counter="02">Flashcard</span>
                                         <span class="c-menu__nav-abstract">
@@ -81,7 +81,7 @@
                                         </span>
                                     </a>
                                 </li>
-                                <li class="c-menu__nav-item " data-ref="menu.item" style="--index:2; --reverse-index:4;">
+                                <li class="c-menu__nav-item " data-ref="menu.item">
                                     <a class="c-menu__nav-link" href="/gms/todo" data-theme-id="elephant" >
                                         <span class="c-menu__nav-label" data-counter="03">Handwriting practice</span>
                                         <span class="c-menu__nav-abstract">
@@ -91,7 +91,7 @@
                                         </span>
                                     </a>
                                 </li>
-                                <li class="c-menu__nav-item " data-ref="menu.item" style="--index:3; --reverse-index:3;">
+                                <li class="c-menu__nav-item " data-ref="menu.item">
                                     <a class="c-menu__nav-link" href="{{ route('search.index') }}" data-theme-id="dove" >
                                         <span class="c-menu__nav-label" data-counter="04">Search</span>
                                         <span class="c-menu__nav-abstract">
@@ -100,7 +100,7 @@
                                         </span>
                                     </a>
                                 </li>
-                                <li class="c-menu__nav-item " data-ref="menu.item" style="--index:4; --reverse-index:2;">
+                                <li class="c-menu__nav-item " data-ref="menu.item">
                                     <a class="c-menu__nav-link" href="/sostenibilita/" data-theme-id="green">
                                         <span class="c-menu__nav-label" data-counter="05">View Statistics</span>
                                         <span class="c-menu__nav-abstract">

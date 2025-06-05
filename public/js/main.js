@@ -12,6 +12,16 @@ document.addEventListener('DOMContentLoaded', function() {
     window.scrollTo(0, 0);
 
     const menu = new MenuController("#menu-btn", ".close-menu", ".menu-overlay");
+
+    $('#blur-switch').on('change', function () {
+        if ($(this).is(':checked')) {
+            $('.marquee-wrap').css({
+                filter: 'blur(5px)',
+            });
+        } else {
+            $('.marquee-wrap').removeAttr('style');
+        }
+    });
 });
 
 
