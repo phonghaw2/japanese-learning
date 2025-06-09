@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\VocabularyController;
 use App\Http\Controllers\FlashCardController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\QuizController;
 use App\Http\Controllers\WritingPracticeController;
 use App\Http\Controllers\SearchController;
 
@@ -33,3 +34,10 @@ Route::get('/writing/random', [WritingPracticeController::class, 'getRandomWord'
 // Search routes
 Route::get('/search', [SearchController::class, 'index'])->name('search.index');
 Route::get('/search/query', [SearchController::class, 'search'])->name('search.query');
+
+
+Route::get('/quiz', [QuizController::class, 'showSetupForm'])->name('quiz.setup');
+Route::post('/quiz/start', [QuizController::class, 'start'])->name('quiz.start');
+Route::get('/quiz/question/{index}', [QuizController::class, 'showQuestion'])->name('quiz.question');
+Route::post('/quiz/answer', [QuizController::class, 'submitAnswer'])->name('quiz.answer');
+Route::get('/quiz/result', [QuizController::class, 'showResult'])->name('quiz.result');
