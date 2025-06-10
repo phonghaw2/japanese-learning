@@ -1,8 +1,10 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <h4>Quiz Setup</h4>
+<div class="card">
+    <div>
+        <h3 class="mb-3">Quiz Setup</h3>
+    </div>
     <form action="{{ route('quiz.start') }}" method="POST">
         @csrf
         <div class="form-group">

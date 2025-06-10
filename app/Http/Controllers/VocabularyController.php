@@ -50,8 +50,10 @@ class VocabularyController extends Controller
                 ->withInput();
         }
 
-        // Import vocabulary from Mazii API
-        $success = $this->importFromMazii($validator->validated()['word']);
+        $words = array_map('trim', explode(',', $validator->validated()['word']));
+        foreach ($words as $word) {
+            $success = $this->importFromMazii($word);
+        }
 
         return redirect()->back()
             ->with('success', $success ? 'Vocabulary imported successfully!' : 'Failed to import vocabulary.');
@@ -278,6 +280,10 @@ class VocabularyController extends Controller
      */
     public function importFromMazii($word)
     {
+        if (Vocabulary::where('word', $word)->exists()) {
+            return true;
+        }
+
         // Fetch data
         $data = $this->fetchMaziiData($word, 'word');
         if (!$data || empty($data)) {
@@ -285,14 +291,14 @@ class VocabularyController extends Controller
         }
         // Use first item from API response
         $item = $data['data'][0];
-        $synonyms = collect($item['synsets'][0]['entry'])->pluck('synonym')->flatten()->unique()->values();
+        $synonyms = collect($item['synsets'][0]['entry'] ?? [])->pluck('synonym')->flatten()->unique()->values();
 
         // Fetch kanji data
         $data = $this->fetchMaziiData($word, 'kanji');
         if (!$data || empty($data)) {
             return false;
         }
-        $kanji = $data['results'][0];
+        $kanji = $data['results'][0] ?? [];
 
         DB::beginTransaction();
 
@@ -339,7 +345,7 @@ class VocabularyController extends Controller
      * @param int $type 0 = on-reading, 1 = kun-reading
      * @return void
      */
-    public function saveReadingsWithExamples(array $examples, Vocabulary $vocabulary, ReadingType $type): void
+    public function saveReadingsWithExamples(array $examples, Vocabulary $vocabulary, int $type): void
     {
         foreach ($examples as $readingText => $items) {
             $reading = $vocabulary->readings()->create([
