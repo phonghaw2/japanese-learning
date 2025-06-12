@@ -78,16 +78,26 @@
     </div>
 </div>
 
-<div class="directional">
-    <div class="directional__btn">
-        <a href="{{ route('flashcard.version2') }}">
-            <span class="directional__btn-content-wrapper">
-                <span class="directional__btn-text">Version 2.0</span>
-                <span class="directional__btn-icon">
-                    <i aria-hidden="true" class="fas fa-long-arrow-alt-right"></i>
+<div class="option-container">
+    <div>
+        <span>Blur:</span>
+        <label class="toggle-switch">
+            <input type="checkbox" id="blur-switch"/>
+            <span class="slider"></span>
+        </label>
+    </div>
+
+    <div>
+        <div class="directional__btn">
+            <a href="{{ route('flashcard.version2') }}">
+                <span class="directional__btn-content-wrapper">
+                    <span class="directional__btn-text">Version 2.0</span>
+                    <span class="directional__btn-icon">
+                        <i aria-hidden="true" class="fas fa-long-arrow-alt-right"></i>
+                    </span>
                 </span>
-            </span>
-        </a>
+            </a>
+        </div>
     </div>
 </div>
 @endsection

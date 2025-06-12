@@ -58,14 +58,14 @@
             <div class="box-right t-right">
                 <div class="item has-tablet" id="btn-menu">
                     <button class="button black" id="menu-btn">
-                        <span>MENU</span>
+                        <span>{{ __('button.menu') }}</span>
                     </button>
                     <div class="menu-overlay">
                         <div>
                             <ul class="c-menu__nav">
                                 <li class="c-menu__nav-item">
                                     <a class="c-menu__nav-link" href="{{ route('vocabularies.create') }}" data-theme-id="coal" >
-                                        <span class="c-menu__nav-label" data-counter="01">New word</span>
+                                        <span class="c-menu__nav-label" data-counter="01">{{ __('contents.header_menu__new_label') }}</span>
                                         <span class="c-menu__nav-abstract">
                                             Creiamo bellezza<br>
                                             per vocazione
@@ -74,7 +74,7 @@
                                 </li>
                                 <li class="c-menu__nav-item " data-ref="menu.item">
                                     <a class="c-menu__nav-link" href="{{ route('flashcard.version1') }}" data-theme-id="brown" >
-                                        <span class="c-menu__nav-label" data-counter="02">Flashcard</span>
+                                        <span class="c-menu__nav-label" data-counter="02">{{ __('contents.header_menu__label_flashcard') }}</span>
                                         <span class="c-menu__nav-abstract">
                                             Custome template<br>
                                             Create new one or edit
@@ -83,7 +83,7 @@
                                 </li>
                                 <li class="c-menu__nav-item " data-ref="menu.item">
                                     <a class="c-menu__nav-link" href="/gms/todo" data-theme-id="elephant" >
-                                        <span class="c-menu__nav-label" data-counter="03">Handwriting practice</span>
+                                        <span class="c-menu__nav-label" data-counter="03">{{ __('contents.header_menu__label_handwriting') }}</span>
                                         <span class="c-menu__nav-abstract">
                                             Forniamo un servizio<br>
                                             completo e personalizzato<br>
@@ -93,7 +93,7 @@
                                 </li>
                                 <li class="c-menu__nav-item " data-ref="menu.item">
                                     <a class="c-menu__nav-link" href="{{ route('search.index') }}" data-theme-id="dove" >
-                                        <span class="c-menu__nav-label" data-counter="04">Search</span>
+                                        <span class="c-menu__nav-label" data-counter="04">{{ __('contents.header_menu__label_search') }}</span>
                                         <span class="c-menu__nav-abstract">
                                             Trasformiamo una visione creativa<br>
                                             in capi esclusivi
@@ -102,7 +102,7 @@
                                 </li>
                                 <li class="c-menu__nav-item " data-ref="menu.item">
                                     <a class="c-menu__nav-link" href="/sostenibilita/" data-theme-id="green">
-                                        <span class="c-menu__nav-label" data-counter="05">View Statistics</span>
+                                        <span class="c-menu__nav-label" data-counter="05">{{ __('contents.header_menu__label_view_statistic') }}</span>
                                         <span class="c-menu__nav-abstract">
                                             Etica ed estetica<br>
                                             sono per noi inseparabili
@@ -112,7 +112,7 @@
                             </ul>
                         </div>
                         <div class="close-menu">
-                            CLOSE
+                            {{ __('button.close') }}
                         </div>
                     </div>
                 </div>
@@ -171,11 +171,11 @@
     </main>
 
 
-    @if (session('success'))
+    @if (session('notification'))
         <script>
             window.addEventListener('DOMContentLoaded', () => {
                 const popup = new Popup();
-                popup.showPopup(@json(session('success')));
+                popup.showPopup(@json(session('notification')));
             });
         </script>
     @endif
@@ -198,7 +198,7 @@
                     </a>
                 </div>
                 <div class="copyright-container udlite-text-xs" data-purpose="footer-copyright">
-                    © 2025 P Academy, Inc.
+                    {{ __('contents.footer_copy_right') }}
                 </div>
             </div>
         </div>

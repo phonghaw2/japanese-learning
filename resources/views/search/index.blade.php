@@ -4,7 +4,7 @@
 @section('content')
 <div class="card">
     <div class="card-header bg-primary text-white">
-        <h4 class="mb-0">Search Vocabulary</h4>
+        <h4 class="mb-0">{{ __('contents.label_search_word') }}</h4>
     </div>
     <div class="card-body">
         <div class="search-container">
@@ -14,7 +14,7 @@
 
         <div id="searchResults" class="vocabulary-list">
             <div class="text-center text-muted">
-                <p>Type a keyword to find vocabulary</p>
+                <p>{{ __('contents.text_search_note') }}</p>
             </div>
         </div>
     </div>
@@ -28,35 +28,30 @@
         const searchResults = $('#searchResults');
         let searchTimeout;
 
-        // Xử lý sự kiện nhập từ khóa
         searchInput.on('input', function() {
             const query = $(this).val().trim();
 
-            // Xóa timeout cũ để tránh gửi nhiều request
             clearTimeout(searchTimeout);
 
-            // Không tìm kiếm nếu từ khóa trống
             if (query === '') {
                 searchResults.html(`
                     <div class="text-center text-muted py-5">
-                        <p>Enter a keyword to search vocabulary</p>
+                        <p>{{ __('contents.text_search_prompt') }}</p>
                     </div>
                 `);
                 return;
             }
 
-            // Đặt timeout 300ms để tránh gửi quá nhiều request khi người dùng đang gõ
             searchTimeout = setTimeout(function() {
                 searchResults.html(`
                     <div class="text-center py-3">
                         <div class="spinner-border text-primary" role="status">
-                            <span class="visually-hidden">Loading results...</span>
+                            <span class="visually-hidden">{{ __('contents.text_search_loading') }}</span>
                         </div>
-                        <p class="mt-2">Loading results...</p>
+                        <p class="mt-2">{{ __('contents.text_search_loading') }}</p>
                     </div>
                 `);
 
-                // Gửi Ajax request
                 $.ajax({
                     url: '{{ route("search.query") }}',
                     type: 'GET',
@@ -67,7 +62,7 @@
                     error: function(xhr) {
                         searchResults.html(`
                             <div class="alert alert-danger">
-                                Something went wrong while searching. Please try again later.
+                                {{ __('contents.msg_search_error') }}
                             </div>
                         `);
                     }
@@ -75,9 +70,7 @@
             }, 300);
         });
 
-        // Hiển thị kết quả tìm kiếm
         function renderSearchResults(data, query) {
-            // Nếu không có kết quả
             if (data.length === 0) {
                 searchResults.html(`
                     <div class="no-results">
@@ -91,11 +84,9 @@
                 return;
             }
 
-            // Xây dựng HTML cho kết quả
             let resultsHtml = '';
 
             data.forEach(function(item) {
-                // Các thẻ
                 let tags = '';
                 if (item.part_of_speech) {
                     tags += `<span class="part-of-speech-tag">${item.part_of_speech}</span>`;
@@ -104,7 +95,6 @@
                     tags += `<span class="jlpt-tag">${item.jlpt_level}</span>`;
                 }
 
-                // Ví dụ câu
                 let exampleHtml = '';
                 if (item.example_sentences && item.example_sentences.length > 0) {
                     const example = item.example_sentences[0];
@@ -117,7 +107,6 @@
                     `;
                 }
 
-                // Highlight từ khóa tìm kiếm
                 const word = highlightMatch(item.word, query);
                 const kanji = item.kanji ? highlightMatch(item.kanji, query) : '';
                 const meaning = highlightMatch(item.meaning, query);
@@ -147,11 +136,9 @@
             searchResults.html(resultsHtml);
         }
 
-        // Hàm highlight từ khóa trong kết quả
         function highlightMatch(text, query) {
             if (!text) return '';
 
-            // Tạo regex để tìm từ khóa (không phân biệt hoa thường)
             const regex = new RegExp('(' + escapeRegExp(query) + ')', 'gi');
             return text.replace(regex, '<span class="search-highlight">$1</span>');
         }

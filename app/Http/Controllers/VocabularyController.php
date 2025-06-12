@@ -56,7 +56,7 @@ class VocabularyController extends Controller
         }
 
         return redirect()->back()
-            ->with('success', $success ? 'Vocabulary imported successfully!' : 'Failed to import vocabulary.');
+            ->with('notification', $success ? 'Vocabulary imported successfully!' : 'Failed to import vocabulary.');
     }
 
     /**
@@ -107,7 +107,7 @@ class VocabularyController extends Controller
             }
         }
 
-        return redirect()->back()->with('success', 'Vocabulary added successfully!');
+        return redirect()->back()->with('notification', 'Vocabulary added successfully!');
     }
 
     /**
@@ -189,7 +189,7 @@ class VocabularyController extends Controller
         }
 
         return redirect()->route('vocabularies.index')
-            ->with('success', 'Vocabulary updated successfully!');
+            ->with('notification', 'Vocabulary updated successfully!');
     }
 
     /**
@@ -203,7 +203,7 @@ class VocabularyController extends Controller
         $vocabulary->delete();
 
         return redirect()->route('vocabularies.index')
-            ->with('success', 'Vocabulary deleted successfully!');
+            ->with('notification', 'Vocabulary deleted successfully!');
     }
 
     /**
